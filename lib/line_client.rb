@@ -97,7 +97,7 @@ class LineClient
           w: 1040,
           h: 1040
         }
-      }
+      },
       actions: {
         open: {
           type: 'web',
