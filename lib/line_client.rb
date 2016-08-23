@@ -128,6 +128,7 @@ class LineClient
         }
       }
     }.to_json
+    Rails.logger.info({success: json})
     post('/v1/events', {
       to: line_ids,
       content: {
