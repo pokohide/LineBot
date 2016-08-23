@@ -1,6 +1,8 @@
+require "#{Rails.root}/lib/line_client"
+require "#{Rails.root}/lib/crawler"
+
 class WebhookController < ApplicationController
   #protect_from_forgery with: :null_session # CSRF対策無効化
-  require "#{Rails.root}/lib/line_client"
 
   CHANNEL_ID = ENV['LINE_CHANNEL_ID']
   CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
@@ -25,6 +27,10 @@ class WebhookController < ApplicationController
       logger.info({fail: res})
     end
     render :nothing => true, status: :ok
+  end
+
+  def search
+   c = Crawler.new(params[:keywoerd]).doc
   end
 
   private

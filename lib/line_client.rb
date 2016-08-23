@@ -2,6 +2,7 @@ require "faraday"
 require "faraday_middleware"
 require "json"
 require "pp"
+require "#{Rails.root}/lib/crawler"
 
 class LineClient
   module ContentType
