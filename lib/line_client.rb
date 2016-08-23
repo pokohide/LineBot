@@ -126,8 +126,7 @@ class LineClient
             }
           ]
         }
-      }
-    }.to_json
+      }.to_json
     post('/v1/events', {
       to: line_ids,
       content: {
