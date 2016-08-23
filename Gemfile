@@ -22,7 +22,6 @@ gem 'puma', '~> 3.0'
 gem 'faraday'
 gem 'faraday_middleware'
 
-
 # for Crawler
 gem 'robotex'
 gem 'nokogiri'

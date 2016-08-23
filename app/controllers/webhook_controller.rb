@@ -30,7 +30,9 @@ class WebhookController < ApplicationController
   end
 
   def search
-   c = Crawler.new(params[:keywoerd]).doc
+   crawler = Crawler.new(params[:keyword])
+   crawler.scrape
+   render json: {results: crawler.results}
   end
 
   private
