@@ -19,13 +19,20 @@ gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem "faraday"
-gem "faraday_middleware"
+gem 'faraday'
+gem 'faraday_middleware'
+
+
+# for Crawler
+gem 'robotex'
+gem 'nokogiri'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'sqlite3'
+  gem 'better_errors'       # 開発中のエラー画面をリッチにする
+  gem 'binding_of_caller'   # 開発中のエラー画面にさらに変数の値を表示する
 end
 
 group :development do
@@ -33,6 +40,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'pry'         # => irb上位互換インタプリタ
+  gem 'pry-doc'     # => pry上からmethod等のソースコードを確認可能に．
+  gem 'pry-coolline' # => pryの入力に対してハイライト
 end
 
 group :production do

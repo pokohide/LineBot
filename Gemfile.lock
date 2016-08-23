@@ -39,9 +39,19 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.1)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (9.0.5)
+    coderay (1.1.1)
     concurrent-ruby (1.0.2)
+    coolline (0.5.0)
+      unicode_utils (~> 1.4)
+    debug_inspector (0.0.2)
     erubis (2.7.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
@@ -71,6 +81,15 @@ GEM
       pkg-config (~> 1.1.7)
     pg (0.18.4)
     pkg-config (1.1.7)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-coolline (0.2.5)
+      coolline (~> 0.5)
+    pry-doc (0.9.0)
+      pry (~> 0.9)
+      yard (~> 0.8)
     puma (3.6.0)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -102,6 +121,8 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    robotex (1.0.0)
+    slop (3.6.0)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -118,21 +139,30 @@ GEM
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    unicode_utils (1.4.0)
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    yard (0.9.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  better_errors
+  binding_of_caller
   byebug
   faraday
   faraday_middleware
   listen (~> 3.0.5)
+  nokogiri
   pg
+  pry
+  pry-coolline
+  pry-doc
   puma (~> 3.0)
   rails (~> 5.0.0)
+  robotex
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
