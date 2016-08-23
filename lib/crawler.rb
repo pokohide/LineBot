@@ -38,7 +38,7 @@ class Crawler
 
   def li_inner_recipe node
     node.xpath('li/div[@data-ratunit="item"]/a[@id="recipe_link"]').each do |li_node|
-      link = li_node.attr('href').value
+      link = li_node.attr('href')
       id = link.match(/\/(\d+)\//)[1]
       image = li_node.xpath('div[@class="cateRankImage"]//img').attr('src').value
       content = li_node.xpath('div[@class="cateRankTtl"]').text
