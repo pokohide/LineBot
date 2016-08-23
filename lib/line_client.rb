@@ -14,6 +14,7 @@ class LineClient
     LOCATION = 7
     STICKER = 8
     CONTACT = 10
+    RICH = 12
   end
   module ToType
     USER = 1
@@ -64,8 +65,82 @@ class LineClient
     crawler = Crawler.new(keyword)
     crawler.scrape
     3.times do |i|
-      sent_recipe(line_ids, crawler.results[i])
+      #sent_recipe(line_ids, crawler.results[i])
+      rich_message(line_ids, crawler.results[i])
     end
+  end
+
+  def send(line_ids, message)
+    post('/v1/events', {
+        to: line_ids,
+        content: {
+            contentType: ContentType::TEXT,
+            toType: ToType::USER,
+            text: message
+        },
+        toChannel: TO_CHANNEL,
+        eventType: EVENT_TYPE
+    })
+  end
+
+  def rich_message(line_ids, recipe)
+    json = {
+      canvas: {
+        width: 1040,
+        height: 1040,
+        initialScene: 'scene1'
+      },
+      images: {
+        image1: {
+          x: 0,
+          y: 0,
+          w: 1040,
+          h: 1040
+        }
+      }
+      actions: {
+        open: {
+          type: 'web',
+          text: 'この料理を作りますか?',
+          params: {
+            linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}"
+          }
+        }
+      },
+      scenes: {
+        scene1: {
+          draws: [
+            {
+              image: image1,
+              x: 0,
+              y: 0,
+              w: 1040,
+              h: 1040
+            }
+          ],
+          listeners: [
+            {
+              type: 'touch',
+              params: [0, 0, 1040, 350],
+              action: 'open'
+            }
+          ]
+        }
+      }
+    }.to_json
+    post('/v1/events', {
+      to: line_ids,
+      content: {
+        contentType: ContentType::RICH,
+        toType: ToType::USER,
+        contentMetadata: {
+          DOWNLOAD_URL: recipe[:image],
+          SPEC_REV: 1,
+          ALT_TEXT: recipe[:content],
+          MARKUP_JSON: json
+        }
+      }
+    })
   end
 
   def post(path, data)
@@ -87,18 +162,5 @@ class LineClient
       request.body = data
     end
     res
-  end
-
-  def send(line_ids, message)
-    post('/v1/events', {
-        to: line_ids,
-        content: {
-            contentType: ContentType::TEXT,
-            toType: ToType::USER,
-            text: message
-        },
-        toChannel: TO_CHANNEL,
-        eventType: EVENT_TYPE
-    })
   end
 end
