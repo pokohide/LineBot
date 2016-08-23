@@ -103,7 +103,7 @@ class LineClient
           type: 'web',
           text: 'この料理を作りますか?',
           params: {
-            linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}"
+            linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{recipe[:id]}"
           }
         }
       },
