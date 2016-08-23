@@ -111,7 +111,7 @@ class LineClient
         scene1: {
           draws: [
             {
-              image: image1,
+              image: 'image1',
               x: 0,
               y: 0,
               w: 1040,
@@ -138,7 +138,9 @@ class LineClient
           ALT_TEXT: recipe[:content],
           MARKUP_JSON: json
         }
-      }
+      },
+      toChannel: TO_CHANNEL,
+      eventType: EVENT_TYPE
     })
   end
 
