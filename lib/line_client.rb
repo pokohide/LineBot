@@ -2,6 +2,7 @@ require "faraday"
 require "faraday_middleware"
 require "json"
 require "pp"
+require 'line/bot'
 require "#{Rails.root}/lib/crawler"
 
 class LineClient
