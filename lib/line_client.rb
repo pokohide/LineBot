@@ -143,17 +143,6 @@ class LineClient
       toChannel: TO_CHANNEL,
       eventType: EVENT_TYPE
     })
-
-    post('/v1/events', {
-        to: line_ids,
-        content: {
-            contentType: ContentType::TEXT,
-            toType: ToType::USER,
-            text: message
-        },
-        toChannel: TO_CHANNEL,
-        eventType: EVENT_TYPE
-    })
   end
 
   def post(path, data)
