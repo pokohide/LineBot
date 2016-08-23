@@ -37,7 +37,7 @@ class LineClient
 
   def sent_recipe(line_ids, recipe)
     id = recipe[:id]
-    client.rich_message.set_action(
+    @client.rich_message.set_action(
       "#{id}": {
         text: recipe[:content],
         link_url: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}",
