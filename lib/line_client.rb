@@ -53,6 +53,7 @@ class LineClient
     #   image_url: recipe[:image],
     #   alt_text:recipe[:content]
     # )
+    Rails.logger.info({success: recipe})
     @client.send_text(
       to_mid: line_ids,
       text: recipe[:content],
