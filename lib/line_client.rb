@@ -28,7 +28,7 @@ class LineClient
     @channel_secret = channel_secret
     @channel_mid = channel_mid
     @proxy = proxy
-    @client = Line::Bot::Client.new do |config|
+    @client ||= Line::Bot::Client.new do |config|
       config.channel_id = channel_id
       config.channel_secret = channel_secret
       config.channel_mid = channel_mid

@@ -22,11 +22,11 @@ class WebhookController < ApplicationController
     #res = client.send([from_mid], text_message)
     res = client.reply([from_mid], text_message)
 
-    if res.status == 200
+    #if res.status == 200
       logger.info({success: res})
-    else
-      logger.info({fail: res})
-    end
+    #else
+    # logger.info({fail: res})
+    #end
     render :nothing => true, status: :ok
   end
 
