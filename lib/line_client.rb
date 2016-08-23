@@ -37,21 +37,25 @@ class LineClient
 
   def sent_recipe(line_ids, recipe)
     id = recipe[:id]
-    @client.rich_message.set_action(
-      "#{id}": {
-        text: recipe[:content],
-        link_url: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}",
-      }
-    ).add_listener(
-      action: "#{id}",
-      x: 0,
-      y: 0,
-      width: 520,
-      height: 520
-    ).send(
+    # @client.rich_message.set_action(
+    #   "#{id}": {
+    #     text: recipe[:content],
+    #     link_url: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}",
+    #   }
+    # ).add_listener(
+    #   action: "#{id}",
+    #   x: 0,
+    #   y: 0,
+    #   width: 520,
+    #   height: 520
+    # ).send(
+    #   to_mid: line_ids,
+    #   image_url: recipe[:image],
+    #   alt_text:recipe[:content]
+    # )
+    @client.send_text(
       to_mid: line_ids,
-      image_url: recipe[:image],
-      alt_text:recipe[:content]
+      text: recipe[:content],
     )
   end
 
