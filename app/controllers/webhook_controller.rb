@@ -26,7 +26,7 @@ class WebhookController < ApplicationController
       case message.content
       when Line::Bot::Message::Text
         client.send_text(
-          to_mid: message.from_mid,
+          to_mid: [message.from_mid, message.to_mid],
           text: message.content[:text]
         )
         logger.info({success: message})
