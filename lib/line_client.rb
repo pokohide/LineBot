@@ -102,32 +102,6 @@ class LineClient
     })
   end
 
-  "scenes": {
-    "scene1": {
-      "listeners": [
-        {
-          "type": "touch",
-          "action": "action0",
-          "params": [0, 0, 520, 1040]
-        },
-        {
-          "type": "touch",
-          "action": "action1",
-          "params": [520, 0, 520, 1040]
-        }
-      ],
-      "draws": [
-        {
-          "h": 1040,
-          "w": 1040,
-          "y": 0,
-          "x": 0,
-          "image": "image1"
-        }
-      ]
-    }
-  },
-
   def rich_message(line_ids, recipe)
     json = {
       canvas: {
