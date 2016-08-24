@@ -69,7 +69,7 @@ class LineClient
     3.times do |i|
       sent_recipe(line_ids, crawler.results[i])
       #rich_message(line_ids, crawler.results[i])
-      send(line_ids, crawler.resuts[i][:content])
+      send(line_ids, crawler.results[i][:content])
     end
   end
 
