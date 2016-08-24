@@ -22,6 +22,14 @@ class WebhookController < ApplicationController
     render :nothing => true, status: :ok
   end
 
+
+  def image
+    require "open-uri"
+    open('http://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/bdbe6b67ee1fb53998143b0dc1b2e201f4f09dd7.82.2.3.2.jpg') do |data|
+      send_data(data.read, :disposition => "inline", :type => "image/jpeg")
+    end
+  end
+
   def search
    crawler = Crawler.new(params[:keyword])
    crawler.scrape
