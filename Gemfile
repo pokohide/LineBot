@@ -25,6 +25,7 @@ gem 'faraday_middleware'
 # for Crawler
 gem 'robotex'
 gem 'nokogiri'
+gem 'anemone'
 
 # for LINE
 gem 'line-bot-api'
