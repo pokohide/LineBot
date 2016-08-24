@@ -68,7 +68,9 @@ class LineClient
       },
       NO: {
         text: 'No',
-        link_url: 'https://www.google.co.jp/#q=no'
+        #link_url: 'https://www.google.co.jp/#q=no'
+        params_text: 'Hello, Brown!',
+        type: 'sendMessage'
       }
     ).add_listener(
       action: 'YES',
@@ -85,7 +87,7 @@ class LineClient
     ).send(
       to_mid: @to_mid,
       image_url: 'https://line2016.herokuapp.com/images',
-      alt_text: recipe[:content]
+      alt_text: 'saaaaaaaaaaaa'
     )
   end
 
