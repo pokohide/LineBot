@@ -45,27 +45,25 @@ class LineClient
     when Line::Bot::Receive::Message
       case @message.content
       when Line::Bot::Message::Text
-        crawler = Crawler.new(@message.content[:text])
-        crawler.scrape
-        3.times do |i|
+        recipes = Recipe.like(@message.content[:text])
+        if recipes.count == 0
           @client.send_text(
             to_mid: @to_mid,
-            text: crawler.results[i][:name]
+            text: '見つかりませんでした。'
+          )
+        else
+          @client.send_text(
+            to_mid: @to_mid,
+            text: recipes[0].name
           )
         end
+        # crawler = Crawler.new(@message.content[:text])
+        # crawler.scrape
         # @client.send_text(
         #   to_mid: @to_mid,
         #   text: @message.content[:text]
         # )
-
-            3.times do |i|
-      sent_recipe(line_ids, crawler.results[i])
-      #rich_message(line_ids, crawler.results[i])
-      #send_image(line_ids, crawler.results[i][:image])
-      #send_text(line_ids, crawler.results[i][:content])
-      rich_message(line_ids, crawler.results[i])
-    end
-        sent_recipe crawler.results[0]
+        # sent_recipe crawler.results[0]
       when Line::Bot::Message::Sticker
         @client.send_text(
           to_mid: @to_mid,
