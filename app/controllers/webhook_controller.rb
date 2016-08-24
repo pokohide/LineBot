@@ -29,6 +29,7 @@ class WebhookController < ApplicationController
           to_mid: message.from_mid,
           text: message.content[:text]
         )
+        logger.info({success: message})
       end
     end
 
