@@ -53,7 +53,12 @@ class LineClient
       when Line::Bot::Message::Sticker
         @client.send_text(
           to_mid: @to_mid,
-          text: 'aaaaaaaaaaaaaaaa'
+          text: """
+            料理bot登録してくれてありがとう！􀁺
+            料理上手への道の第一歩を踏み出したそこのあなた􀁸
+            これから一緒に料理を作っていって、料理レベルを上げていこう！✨
+            上手くできたら友達に自慢できるかも？！􀂌
+          """
         )        
       end
     end 
