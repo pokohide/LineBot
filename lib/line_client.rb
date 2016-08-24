@@ -69,8 +69,8 @@ class LineClient
     3.times do |i|
       sent_recipe(line_ids, crawler.results[i])
       #rich_message(line_ids, crawler.results[i])
-      send_image(line_ids, crawler.results[i][:image])
-      send_text(line_ids, crawler.results[i][:content])
+      #send_image(line_ids, crawler.results[i][:image])
+      #send_text(line_ids, crawler.results[i][:content])
       rich_message(line_ids, crawler.results[i])
     end
   end
@@ -102,19 +102,45 @@ class LineClient
     })
   end
 
+  "scenes": {
+    "scene1": {
+      "listeners": [
+        {
+          "type": "touch",
+          "action": "action0",
+          "params": [0, 0, 520, 1040]
+        },
+        {
+          "type": "touch",
+          "action": "action1",
+          "params": [520, 0, 520, 1040]
+        }
+      ],
+      "draws": [
+        {
+          "h": 1040,
+          "w": 1040,
+          "y": 0,
+          "x": 0,
+          "image": "image1"
+        }
+      ]
+    }
+  },
+
   def rich_message(line_ids, recipe)
     json = {
       canvas: {
-        width: 520,
-        height: 520,
+        width: 1040,
+        height: 1040,
         initialScene: 'scene1'
       },
       images: {
         images1: {
           x: 0,
           y: 0,
-          w: 520,
-          h: 520
+          w: 1040,
+          h: 1040
         }
       },
       actions: {
@@ -124,28 +150,67 @@ class LineClient
           params: {
             linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{recipe[:id]}"
           }
+        },
+        yes: {
+          type: 'web',
+          text: 'YES',
+          params: {
+            linkUri: 'https://www.google.co.jp/#q=yes'
+          }
+        },
+        no: {
+          type: 'web',
+          text: 'NO',
+          params: {
+            linkUri: 'https://www.google.co.jp/#q=no'
+          }
         }
       },
       scenes: {
         scene1: {
-          draws: [
-            {
-              image: 'image1',
-              x: 0,
-              y: 0,
-              w: 520,
-              h: 520
-            }
-          ],
           listeners: [
             {
               type: 'touch',
-              action: 'open',
-              params: [0, 0, 520, 350]
+              action: 'no',
+              params: [0, 0, 520, 1040]
+            },
+            {
+              type: 'touch',
+              action: 'yes',
+              params: [520, 0, 520, 1040]
+            }
+          ],
+          draws: [
+            {
+              x: 0,
+              y: 0,
+              w: 1040,
+              h: 1040,
+              image: 'image1'
             }
           ]
         }
       }
+      # scenes: {
+      #   scene1: {
+      #     draws: [
+      #       {
+      #         image: 'image1',
+      #         x: 0,
+      #         y: 0,
+      #         w: 520,
+      #         h: 520
+      #       }
+      #     ],
+      #     listeners: [
+      #       {
+      #         type: 'touch',
+      #         action: 'open',
+      #         params: [0, 0, 520, 350]
+      #       }
+      #     ]
+      #   }
+      # }
     }.to_json
     Rails.logger.info({success: json})
     post('/v1/events', {
@@ -155,7 +220,7 @@ class LineClient
         toType: ToType::USER,
         contentMetadata: {
           #DOWNLOAD_URL: recipe[:image],
-          DOWNLOAD_URL: 'https://line2016.herokuapp.com/images',
+          #DOWNLOAD_URL: 'https://line2016.herokuapp.com/images',
           SPEC_REV: '1',
           ALT_TEXT: recipe[:content],
           MARKUP_JSON: json
