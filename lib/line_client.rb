@@ -64,11 +64,11 @@ class LineClient
     @client.rich_message.set_action(
       YES: {
         text: 'Yes',
+        type: 'web',
         link_url: 'https://www.google.co.jp/#q=yes'
       },
       NO: {
         text: 'No',
-        #link_url: 'https://www.google.co.jp/#q=no'
         params_text: 'Hello, Brown!',
         type: 'sendMessage'
       }
