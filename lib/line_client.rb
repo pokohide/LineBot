@@ -69,11 +69,12 @@ class LineClient
     3.times do |i|
       sent_recipe(line_ids, crawler.results[i])
       #rich_message(line_ids, crawler.results[i])
-      send(line_ids, crawler.results[i][:content])
+      send_image(line_ids, crawler.results[i][:image])
+      send_text(line_ids, crawler.results[i][:content])
     end
   end
 
-  def send(line_ids, message)
+  def send_text(line_ids, message)
     post('/v1/events', {
         to: line_ids,
         content: {
@@ -83,6 +84,20 @@ class LineClient
         },
         toChannel: TO_CHANNEL,
         eventType: EVENT_TYPE
+    })
+  end
+
+  def send_image(line_ids, image)
+    post('/v1/events', {
+      to: line_ids,
+      content: {
+        contentType: ContentType::IMAGE,
+        toType: ToType::USER,
+        originalContentUrl: image,
+        previewImageUrl: image
+      },
+      toChannel: TO_CHANNEL,
+      eventType: EVENT_TYPE
     })
   end
 
