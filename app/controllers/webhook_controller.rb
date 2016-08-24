@@ -36,7 +36,7 @@ class WebhookController < ApplicationController
     end
     render :nothing => true, status: :ok
   end
-  
+
   def search
    crawler = Crawler.new(params[:keyword])
    crawler.scrape
@@ -45,7 +45,7 @@ class WebhookController < ApplicationController
 
   private
   def client
-    @client ||=  Line::Bot::Client.new { |config|
+    @client ||= Line::Bot::Client.new do |config|
       config.channel_id = CHANNEL_ID
       config.channel_secret = CHANNEL_SECRET
       config.channel_mid = CHANNEL_MID
