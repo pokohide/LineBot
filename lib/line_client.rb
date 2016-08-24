@@ -35,6 +35,7 @@ class LineClient
       config.channel_secret = channel_secret
       config.channel_mid = channel_mid
     end
+    is_valid_signature?
   end
 
   def sent_recipe(line_ids, recipe)
@@ -68,6 +69,7 @@ class LineClient
     3.times do |i|
       sent_recipe(line_ids, crawler.results[i])
       #rich_message(line_ids, crawler.results[i])
+      send(line_ids, crawler.resuts[i][:content])
     end
   end
 
@@ -170,10 +172,9 @@ class LineClient
 
   private
   def is_valid_signature?
-    signature = request.env['HTTP_X_LINE_CHANNELSIGNATURE']
-    unless @client.validate_signature(request.body.read, signature)
+    signature = @request.env['HTTP_X_LINE_CHANNELSIGNATURE']
+    unless @client.validate_signature(@request.body.read, signature)
       error 400 do 'Bad Request' end
     end
-    receive_request = Line::Bot::Receive::Request.new(request.env)
   end
 end
