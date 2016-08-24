@@ -28,7 +28,7 @@ class WebhookController < ApplicationController
       error 400 do 'Bad Request' end
     end
     receive_request = Line::Bot::Receive::Request.new(request.env)
-    Rails.logger.debug(receive_request)
+    Rails.logger.debug(receive_request.inspect)
     receive_request.data.each do |message|
       c = LineClient.new(client, message)
       c.reply
