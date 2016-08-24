@@ -191,6 +191,7 @@ class LineClient
           ]
         }
       }
+    }.to_json
       # scenes: {
       #   scene1: {
       #     draws: [
@@ -211,7 +212,6 @@ class LineClient
       #     ]
       #   }
       # }
-    }.to_json
     Rails.logger.info({success: json})
     post('/v1/events', {
       to: line_ids,
