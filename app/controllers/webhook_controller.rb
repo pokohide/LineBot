@@ -40,18 +40,6 @@ class WebhookController < ApplicationController
     render :nothing => true, status: :ok
   end
 
-
-  receive_request.data.each { |message|
-    case message.content
-    when Line::Bot::Message::Text
-      client.send_text(
-        to_mid: message.from_mid,
-        text: message.content[:text],
-      )
-    end
-  }
-
-
   def search
    crawler = Crawler.new(params[:keyword])
    crawler.scrape
