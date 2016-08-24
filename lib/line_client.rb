@@ -120,21 +120,18 @@ class LineClient
       actions: {
         open: {
           type: 'web',
-          text: 'この料理を作りますか?',
           params: {
-            linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{recipe[:id]}"
+            linkUri: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids.first}&recipe_id=#{recipe[:id]}"
           }
         },
         yes: {
           type: 'web',
-          text: 'YES',
           params: {
             linkUri: 'https://www.google.co.jp/#q=yes'
           }
         },
         no: {
           type: 'web',
-          text: 'NO',
           params: {
             linkUri: 'https://www.google.co.jp/#q=no'
           }
@@ -166,26 +163,6 @@ class LineClient
         }
       }
     }.to_json
-      # scenes: {
-      #   scene1: {
-      #     draws: [
-      #       {
-      #         image: 'image1',
-      #         x: 0,
-      #         y: 0,
-      #         w: 520,
-      #         h: 520
-      #       }
-      #     ],
-      #     listeners: [
-      #       {
-      #         type: 'touch',
-      #         action: 'open',
-      #         params: [0, 0, 520, 350]
-      #       }
-      #     ]
-      #   }
-      # }
     Rails.logger.info({success: json})
     post('/v1/events', {
       to: line_ids,
@@ -194,7 +171,7 @@ class LineClient
         toType: ToType::USER,
         contentMetadata: {
           #DOWNLOAD_URL: recipe[:image],
-          #DOWNLOAD_URL: 'https://line2016.herokuapp.com/images',
+          DOWNLOAD_URL: 'https://line2016.herokuapp.com/images',
           SPEC_REV: '1',
           ALT_TEXT: recipe[:content],
           MARKUP_JSON: json
