@@ -44,7 +44,7 @@ class LineClient
   end
 
   def reply
-    case message
+    case @message
     when Line::Bot::Receive::Operation
       case data.content
       when Line::Bot::Operation::AddedAsFriend
