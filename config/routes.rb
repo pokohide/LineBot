@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   post '/callback' => 'webhook#callback'
   get '/search/:keyword', to: 'webhook#search'
   #get '/images/:recipe_id/:id', to: 'webhook#image'
-  get '/images/:id', to: 'webhook#image'
+  get '/images/:recipe_id/:mid', to: 'webhook#image'
 end
