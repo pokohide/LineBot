@@ -57,10 +57,11 @@ class LineClient
       case @message.content
       when Line::Bot::Message::Text
         Rails.logger.debug(@message.content[:text])
-        @client.send_text(
+        x = @client.send_text(
           to_mid: @to_mid,
           text: @message.content[:text]
         )
+        Rails.logger.debug(x)
       when Line::Bot::Message::Sticker
         @client.send_text(
           to_mid: @to_mid,
