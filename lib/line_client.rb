@@ -71,6 +71,7 @@ class LineClient
       #rich_message(line_ids, crawler.results[i])
       send_image(line_ids, crawler.results[i][:image])
       send_text(line_ids, crawler.results[i][:content])
+      rich_message(line_ids, crawler.results[i])
     end
   end
 
@@ -104,16 +105,16 @@ class LineClient
   def rich_message(line_ids, recipe)
     json = {
       canvas: {
-        width: 1040,
-        height: 1040,
+        width: 520,
+        height: 520,
         initialScene: 'scene1'
       },
       images: {
-        image1: {
+        images1: {
           x: 0,
           y: 0,
-          w: 1040,
-          h: 1040
+          w: 520,
+          h: 520
         }
       },
       actions: {
@@ -132,15 +133,15 @@ class LineClient
               image: 'image1',
               x: 0,
               y: 0,
-              w: 1040,
-              h: 1040
+              w: 520,
+              h: 520
             }
           ],
           listeners: [
             {
               type: 'touch',
-              params: [0, 0, 1040, 350],
-              action: 'open'
+              action: 'open',
+              params: [0, 0, 520, 350]
             }
           ]
         }
@@ -154,13 +155,11 @@ class LineClient
         toType: ToType::USER,
         contentMetadata: {
           DOWNLOAD_URL: recipe[:image],
-          SPEC_REV: 1,
+          SPEC_REV: '1',
           ALT_TEXT: recipe[:content],
           MARKUP_JSON: json
         }
-      },
-      toChannel: TO_CHANNEL,
-      eventType: EVENT_TYPE
+      }
     })
   end
 
