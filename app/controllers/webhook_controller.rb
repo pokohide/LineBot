@@ -1,5 +1,6 @@
 require "#{Rails.root}/lib/line_client"
 require "#{Rails.root}/lib/crawler"
+require 'line/bot'
 
 class WebhookController < ApplicationController
   #protect_from_forgery with: :null_session # CSRF対策無効化
@@ -18,9 +19,18 @@ class WebhookController < ApplicationController
     text_message = result['content']['text']
     from_mid =result['content']['from']
 
-    client = LineClient.new(CHANNEL_ID, CHANNEL_SECRET, CHANNEL_MID, OUTBOUND_PROXY)
-    #res = client.send([from_mid], text_message)
-    res = client.reply([from_mid], text_message)
+    #client = LineClient.new(CHANNEL_ID, CHANNEL_SECRET, CHANNEL_MID, request, OUTBOUND_PROXY)
+    #res = client.reply([from_mid], text_message)
+
+    receive_requests.data.each do |message|
+      case message.content
+      when Line::Bot::Message::Text
+        client.send_text(
+          to_mid: message.from_mid,
+          text: message.content[:text]
+        )
+      end
+    end
 
     #if res.status == 200
       logger.info({success: res})
@@ -30,25 +40,41 @@ class WebhookController < ApplicationController
     render :nothing => true, status: :ok
   end
 
-  def search
-    @client ||= Line::Bot::Client.new do |config|
-      config.channel_id = CHANNEL_ID
-      config.channel_secret = CHANNEL_SECRET
-      config.channel_mid = CHANNEL_MID
-    end
-    @client.send_text(
-      to_mid: 'u206d25c2ea6bd87c17655609a1c37cb8',
-      text: params[:keyword],
-    )
-    
 
-   #crawler = Crawler.new(params[:keyword])
-   #crawler.scrape
-   #render json: {results: crawler.results}
-   render json: {results: params[:keyword]}
+  receive_request.data.each { |message|
+    case message.content
+    when Line::Bot::Message::Text
+      client.send_text(
+        to_mid: message.from_mid,
+        text: message.content[:text],
+      )
+    end
+  }
+
+
+  def search
+   crawler = Crawler.new(params[:keyword])
+   crawler.scrape
+   render json: {results: crawler.results}
   end
 
   private
+  def client
+    @client ||= Line::Bot::Client.new { |config|
+      config.channel_id = ENV["LINE_CHANNEL_ID"]
+      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+      config.channel_mid = ENV["LINE_CHANNEL_MID"]
+    }
+  end
+
+  def receive_requests
+    signature = request.env['HTTP_X_LINE_CHANNELSIGNATURE']
+    unless client.validate_signature(request.body.read, signature)
+      error 400 do 'Bad Request' end
+    end
+    Line::Bot::Receive::Request.new(request.env)
+  end
+
   # LINEからのアクセスか確認.
   # 認証に成功すればtrueを返す。
   # ref) https://developers.line.me/bot-api/getting-started-with-bot-api-trial#signature_validation

@@ -24,11 +24,12 @@ class LineClient
   TO_CHANNEL = 1383378250 # this is fixed value
   EVENT_TYPE = "138311608800106203" # this is fixed value
 
-  def initialize(channel_id, channel_secret, channel_mid, proxy = nil)
+  def initialize(channel_id, channel_secret, channel_mid, request, proxy = nil)
     @channel_id = channel_id
     @channel_secret = channel_secret
     @channel_mid = channel_mid
     @proxy = proxy
+    @request = request
     @client ||= Line::Bot::Client.new do |config|
       config.channel_id = channel_id
       config.channel_secret = channel_secret
@@ -65,8 +66,8 @@ class LineClient
     crawler = Crawler.new(keyword)
     crawler.scrape
     3.times do |i|
-      #sent_recipe(line_ids, crawler.results[i])
-      rich_message(line_ids, crawler.results[i])
+      sent_recipe(line_ids, crawler.results[i])
+      #rich_message(line_ids, crawler.results[i])
     end
   end
 
@@ -165,5 +166,14 @@ class LineClient
       request.body = data
     end
     res
+  end
+
+  private
+  def is_valid_signature?
+    signature = request.env['HTTP_X_LINE_CHANNELSIGNATURE']
+    unless @client.validate_signature(request.body.read, signature)
+      error 400 do 'Bad Request' end
+    end
+    receive_request = Line::Bot::Receive::Request.new(request.env)
   end
 end
