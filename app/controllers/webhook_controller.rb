@@ -33,7 +33,7 @@ class WebhookController < ApplicationController
     end
 
     #if res.status == 200
-      logger.info({success: res})
+      #logger.info({success: res})
     #else
     # logger.info({fail: res})
     #end
