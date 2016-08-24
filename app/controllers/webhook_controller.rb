@@ -31,9 +31,21 @@ class WebhookController < ApplicationController
   end
 
   def search
-   crawler = Crawler.new(params[:keyword])
-   crawler.scrape
-   render json: {results: crawler.results}
+    @client ||= Line::Bot::Client.new do |config|
+      config.channel_id = CHANNEL_ID
+      config.channel_secret = CHANNEL_SECRET
+      config.channel_mid = CHANNEL_MID
+    end
+    @client.send_text(
+      to_mid: message.from_mid,
+      text: params[:keyword],
+    )
+    
+
+   #crawler = Crawler.new(params[:keyword])
+   #crawler.scrape
+   #render json: {results: crawler.results}
+   render json: {results: params[:keyword]}
   end
 
   private
