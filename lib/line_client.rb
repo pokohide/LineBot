@@ -50,12 +50,13 @@ class LineClient
       when Line::Bot::Operation::AddedAsFriend
         @client.send_text(
           to_mid: @to_mid,
-          text: "Hello",
+          text: "Hello"
         )
       end
     when Line::Bot::Receive::Message
       case @message.content
       when Line::Bot::Message::Text
+        Rails.logger.debug(@message.content[:text])
         @client.send_text(
           to_mid: @to_mid,
           text: @message.content[:text]

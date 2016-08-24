@@ -31,7 +31,6 @@ class WebhookController < ApplicationController
     receive_request = Line::Bot::Receive::Request.new(request.env)
     Rails.logger.debug(request)
     receive_request.data.each do |message|
-      Rails.logger.debug(message)
       c = LineClient.new(client, message)
       c.reply
     end
