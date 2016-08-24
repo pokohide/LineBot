@@ -58,7 +58,7 @@ class LineClient
       when Line::Bot::Message::Text
         @client.send_text(
           to_mid: @to_mid,
-          text: message.content[:text]
+          text: @message.content[:text]
         )
       when Line::Bot::Message::Sticker
         @client.send_text(
