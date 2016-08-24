@@ -20,6 +20,8 @@ class LineClient
     USER = 1
   end
 
+  HOST = 'https://line2016.herokuapp.com'
+
   END_POINT = "https://trialbot-api.line.me"
   TO_CHANNEL = 1383378250 # this is fixed value
   EVENT_TYPE = "138311608800106203" # this is fixed value
@@ -31,8 +33,6 @@ class LineClient
   end
 
   def reply
-    crawler = Crawler.new(@message.content[:text])
-    crawler.scrape
     case @message
     when Line::Bot::Receive::Operation
       case data.content
@@ -45,10 +45,26 @@ class LineClient
     when Line::Bot::Receive::Message
       case @message.content
       when Line::Bot::Message::Text
+        crawler = Crawler.new(@message.content[:text])
+        crawler.scrape
+        3.times do |i|
+          @client.send_text(
+            to_mid: @to_mid,
+            text: crawler.results[i][:name]
+          )
+        end
         # @client.send_text(
         #   to_mid: @to_mid,
         #   text: @message.content[:text]
         # )
+
+            3.times do |i|
+      sent_recipe(line_ids, crawler.results[i])
+      #rich_message(line_ids, crawler.results[i])
+      #send_image(line_ids, crawler.results[i][:image])
+      #send_text(line_ids, crawler.results[i][:content])
+      rich_message(line_ids, crawler.results[i])
+    end
         sent_recipe crawler.results[0]
       when Line::Bot::Message::Sticker
         @client.send_text(
@@ -89,8 +105,8 @@ class LineClient
       height: 520
     ).send(
       to_mid: @to_mid,
-      image_url: 'https://line2016.herokuapp.com/images',
-      alt_text: 'saaaaaaaaaaaa'
+      image_url: "#{HOST}/images/#{recipe.id}"
+      alt_text: recipe.name
     )
   end
 

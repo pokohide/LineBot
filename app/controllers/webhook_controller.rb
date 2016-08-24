@@ -3,6 +3,7 @@ require "#{Rails.root}/lib/crawler"
 require 'line/bot'
 
 class WebhookController < ApplicationController
+  include Recipe
 
   CHANNEL_ID = ENV['LINE_CHANNEL_ID']
   CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
@@ -24,8 +25,8 @@ class WebhookController < ApplicationController
 
 
   def image
-    require "open-uri"
-    open('http://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/bdbe6b67ee1fb53998143b0dc1b2e201f4f09dd7.82.2.3.2.jpg') do |data|
+    recipe = Recipe.find_by(rid: params[:rid])
+    open(recipe.image) do |data|
       send_data(data.read, :disposition => "inline", :type => "image/jpeg")
     end
   end
