@@ -154,7 +154,8 @@ class LineClient
         contentType: ContentType::RICH,
         toType: ToType::USER,
         contentMetadata: {
-          DOWNLOAD_URL: recipe[:image],
+          #DOWNLOAD_URL: recipe[:image],
+          DOWNLOAD_URL: 'https://line2016.herokuapp.com/images',
           SPEC_REV: '1',
           ALT_TEXT: recipe[:content],
           MARKUP_JSON: json
