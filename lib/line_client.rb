@@ -24,19 +24,6 @@ class LineClient
   TO_CHANNEL = 1383378250 # this is fixed value
   EVENT_TYPE = "138311608800106203" # this is fixed value
 
-  # def initialize(channel_id, channel_secret, channel_mid, request, proxy = nil)
-  #   @channel_id = channel_id
-  #   @channel_secret = channel_secret
-  #   @channel_mid = channel_mid
-  #   @proxy = proxy
-  #   @request = request
-  #   @client ||= Line::Bot::Client.new do |config|
-  #     config.channel_id = channel_id
-  #     config.channel_secret = channel_secret
-  #     config.channel_mid = channel_mid
-  #   end
-  # end
-
   def initialize(client, message)
     @client = client
     @message = message
@@ -44,6 +31,8 @@ class LineClient
   end
 
   def reply
+    crawler = Crawler.new(@message.content[:text])
+    crawler.scrape
     case @message
     when Line::Bot::Receive::Operation
       case data.content
@@ -56,13 +45,11 @@ class LineClient
     when Line::Bot::Receive::Message
       case @message.content
       when Line::Bot::Message::Text
-        Rails.logger.debug(@message.content[:text])
-        Rails.logger.debug(@client.inspect)
-        x = @client.send_text(
-          to_mid: @to_mid,
-          text: @message.content[:text]
-        )
-        Rails.logger.debug(x.inspect)
+        # @client.send_text(
+        #   to_mid: @to_mid,
+        #   text: @message.content[:text]
+        # )
+        sent_recipe crawler.results[0]
       when Line::Bot::Message::Sticker
         @client.send_text(
           to_mid: @to_mid,
@@ -72,28 +59,33 @@ class LineClient
     end 
   end
 
-  def sent_recipe(line_ids, recipe)
-    id = recipe[:id]
-    # @client.rich_message.set_action(
-    #   "#{id}": {
-    #     text: recipe[:content],
-    #     link_url: "https://line2016.herokuapp.com/api/choice?mid=#{line_ids}&recipe_id=#{id}",
-    #   }
-    # ).add_listener(
-    #   action: "#{id}",
-    #   x: 0,
-    #   y: 0,
-    #   width: 520,
-    #   height: 520
-    # ).send(
-    #   to_mid: line_ids,
-    #   image_url: recipe[:image],
-    #   alt_text:recipe[:content]
-    # )
-    Rails.logger.info({success: recipe})
-    @client.send_text(
-      to_mid: line_ids,
-      text: recipe[:content],
+  def sent_recipe recipe
+    Rails.logger.info(recipe.inspect)
+    @client.rich_message.set_action(
+      YES: {
+        text: 'Yes',
+        link_url: 'https://www.google.co.jp/#q=yes'
+      },
+      NO: {
+        text: 'No',
+        link_url: 'https://www.google.co.jp/#q=no'
+      }
+    ).add_listener(
+      action: 'YES',
+      x: 0,
+      y: 0,
+      width: 520,
+      height: 520
+    ).add_listener(
+      action: 'NO',
+      x: 521,
+      y: 0,
+      width: 520,
+      height: 520
+    ).send(
+      to_mid: @to_mid,
+      image_url: 'https://line2016.herokuapp.com/images',
+      alt_text: recipe[:content]
     )
   end
 
