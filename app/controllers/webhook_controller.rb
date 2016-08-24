@@ -37,7 +37,7 @@ class WebhookController < ApplicationController
       config.channel_mid = CHANNEL_MID
     end
     @client.send_text(
-      to_mid: message.from_mid,
+      to_mid: 'u206d25c2ea6bd87c17655609a1c37cb8',
       text: params[:keyword],
     )
     
