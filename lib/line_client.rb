@@ -24,18 +24,49 @@ class LineClient
   TO_CHANNEL = 1383378250 # this is fixed value
   EVENT_TYPE = "138311608800106203" # this is fixed value
 
-  def initialize(channel_id, channel_secret, channel_mid, request, proxy = nil)
-    @channel_id = channel_id
-    @channel_secret = channel_secret
-    @channel_mid = channel_mid
-    @proxy = proxy
-    @request = request
-    @client ||= Line::Bot::Client.new do |config|
-      config.channel_id = channel_id
-      config.channel_secret = channel_secret
-      config.channel_mid = channel_mid
-    end
-    is_valid_signature?
+  # def initialize(channel_id, channel_secret, channel_mid, request, proxy = nil)
+  #   @channel_id = channel_id
+  #   @channel_secret = channel_secret
+  #   @channel_mid = channel_mid
+  #   @proxy = proxy
+  #   @request = request
+  #   @client ||= Line::Bot::Client.new do |config|
+  #     config.channel_id = channel_id
+  #     config.channel_secret = channel_secret
+  #     config.channel_mid = channel_mid
+  #   end
+  # end
+
+  def initialize(client, message)
+    @client = client
+    @message = message
+    @to_mid = message.from_mid
+  end
+
+  def reply
+    case message
+    when Line::Bot::Receive::Operation
+      case data.content
+      when Line::Bot::Operation::AddedAsFriend
+        @client.send_text(
+          to_mid: @to_mid,
+          text: "Hello",
+        )
+      end
+    when Line::Bot::Receive::Message
+      case message.content
+      when Line::Bot::Message::Text
+        @client.send_text(
+          to_mid: @to_mid,
+          text: message.content[:text]
+        )
+      when Line::Bot::Message::Sticker
+        @client.send_text(
+          to_mid: @to_mid,
+          text: 'aaaaaaaaaaaaaaaa'
+        )        
+      end
+    end 
   end
 
   def sent_recipe(line_ids, recipe)
@@ -199,13 +230,5 @@ class LineClient
       request.body = data
     end
     res
-  end
-
-  private
-  def is_valid_signature?
-    signature = @request.env['HTTP_X_LINE_CHANNELSIGNATURE']
-    unless @client.validate_signature(@request.body.read, signature)
-      error 400 do 'Bad Request' end
-    end
   end
 end
