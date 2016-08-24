@@ -94,7 +94,7 @@ class LineClient
     )
   end
 
-  def reply(line_ids, keyword)
+  def reply1(line_ids, keyword)
     crawler = Crawler.new(keyword)
     crawler.scrape
     3.times do |i|
