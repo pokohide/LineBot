@@ -103,7 +103,7 @@ class LineClient
       height: 520
     ).send(
       to_mid: @to_mid,
-      image_url: "#{HOST}/images/#{recipe.id}"
+      image_url: "#{HOST}/images/#{recipe.id}",
       alt_text: recipe.name
     )
   end
