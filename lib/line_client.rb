@@ -71,6 +71,8 @@ class LineClient
     end 
   end
 
+  def 
+
   def send_recipe recipe
     @client.multiple_message.add_text(
       text: recipe.name
@@ -121,27 +123,6 @@ class LineClient
       image_url: "#{HOST}/images/#{recipe.rid}",
       alt_text: recipe.name
     )
-  end
-
-  def post(path, data)
-    client = Faraday.new(:url => END_POINT) do |conn|
-      conn.request :json
-      conn.response :json, :content_type => /\bjson$/
-      conn.adapter Faraday.default_adapter
-      conn.proxy @proxy
-    end
-
-    res = client.post do |request|
-      request.url path
-      request.headers = {
-          'Content-type' => 'application/json; charset=UTF-8',
-          'X-Line-ChannelID' => @channel_id,
-          'X-Line-ChannelSecret' => @channel_secret,
-          'X-Line-Trusted-User-With-ACL' => @channel_mid
-      }
-      request.body = data
-    end
-    res
   end
 
   private
