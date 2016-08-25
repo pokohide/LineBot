@@ -65,7 +65,9 @@ class LineClient
               send_text '見つかりませんでした。'
             else
               #send_recipe recipes[0]
-              send_choice recipes[0]
+              recipe = recipes[0]
+              send_text "#{recipe.name}を作りませんか?\n所要時間は#{recipe.time}で、費用は#{recipe.fee}です！"
+              send_choice recipe
             end
           end
         when Line::Bot::Message::Sticker
