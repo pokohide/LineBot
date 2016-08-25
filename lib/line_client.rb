@@ -45,7 +45,7 @@ class LineClient
         case @message.content
         when Line::Bot::Message::Text
           if /次へ\(手順(\d+)へ\)/ =~ @message.content[:text]
-            next_step $1.to_i
+            next_step ($1.to_i -1)
           elsif /(.+?)を諦めます/ =~ @message.content[:text]
             recipe = Recipe.find_by(name: $1)
             send_text """
@@ -192,8 +192,8 @@ class LineClient
     if if_next
       @client.rich_message.set_action(
         NEXT: {
-          text: "次へ(手順#{@user.now_step}へ)",
-          params_text: "次へ(手順#{@user.now_step}へ)",
+          text: "次へ(手順#{@user.now_step+1}へ)",
+          params_text: "次へ(手順#{@user.now_step+1}へ)",
           type: 'sendMessage'          
         }
       ).add_listener(
@@ -205,7 +205,7 @@ class LineClient
       ).send(
         to_mid: @to_mid,
         image_url: "#{HOST}/assets/next",
-        alt_text: "次へ(手順#{@user.now_step}へ)"
+        alt_text: "次へ(手順#{@user.now_step+1}へ)"
       )
     else
       recipe = Recipe.find_by(rid: @user.r_id)
