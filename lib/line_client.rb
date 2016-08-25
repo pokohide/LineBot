@@ -87,8 +87,9 @@ class LineClient
     @recipe = Recipe.find_by(rid: @user.rid)
     step = @recipe.steps[@user.now_step]
     @user.update(now_step: @user.now_step + 1)
+    send_step(step)
+
     next? = @recipe.steps[@user.now_step].present?
-    send_step step
     next_step_button next?
   end
 
