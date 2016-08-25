@@ -126,6 +126,7 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    rmagick (2.13.4)
     robotex (1.0.0)
     slop (3.6.0)
     spring (1.7.2)
@@ -169,6 +170,7 @@ DEPENDENCIES
   pry-doc
   puma (~> 3.0)
   rails (~> 5.0.0)
+  rmagick (~> 2.13.1)
   robotex
   spring
   spring-watcher-listen (~> 2.0.0)
