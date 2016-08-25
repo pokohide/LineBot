@@ -57,7 +57,8 @@ class LineClient
         when Line::Bot::Message::Text
           if /(.+?)をつくります！！！/ =~ @message.content[:text]
             send_text "#{$1}のクッキングを開始します！"
-            start_cooking
+            start_cooking($1)
+            next_step
           else
             recipes = Recipe.like(@message.content[:text])
             if recipes.count == 0
@@ -116,9 +117,43 @@ class LineClient
   # 次のステップがあるかどうか
   def next_step_button if_next
     if if_next
-      send_text('次はないぞ')
+      @client.rich_message.set_action(
+        NEXT: {
+          text: "次へ",
+          params_text: "次へ",
+          type: 'sendMessage'          
+        }
+      ).add_listener(
+        action: 'NEXT',
+        x: 0,
+        y: 0,
+        width: 1020,
+        height: 100
+      ).send(
+        to_mid: @to_mid,
+        image_url: "#{HOST}/assets/next",
+        alt_text: '次へ'
+      )
     else
-      send_text('ok')
+      @client.send_text 'お疲れ様でした！'
+      @client.rich_message.set_action(
+        SHARE: {
+          text: 'シェアしよう',
+          link_url: "#{HOST}/recipe/#{recipe.rid}/materials",
+          type: 'web'        
+        }
+      ).add_listener(
+        action: 'SHARE',
+        x: 0,
+        y: 0,
+        width: 1020,
+        height: 100
+      ).send(
+        to_mid: @to_mid,
+        image_url: "#{HOST}/assets/finish",
+        alt_text: 'シェアしよう'
+      )
+      end_cooking
     end  
   end
 
@@ -135,24 +170,6 @@ class LineClient
 
   def send_choice recipe
     Rails.logger.info(recipe.inspect)
-    Rails.logger.info(FOOD: {
-        text: '食材',
-        link_url: "#{HOST}/recipe/#{recipe.rid}/materials",
-        type: 'web'
-      },
-      RECIPE: {
-        text: 'レシピ',
-        link_url: "#{HOST}/recipe/#{recipe.rid}",
-        type: 'web'
-      },
-      COOK: {
-        # text: 'レシピ',
-        # link_url: "#{HOST}/recipe/#{recipe.rid}",
-        # type: 'web'
-        text: "#{recipe.name}をつくります！！！",
-        params_text: "#{recipe.name}をつくります！！！",
-        type: 'sendMessage'
-      }).inspect
     @client.rich_message.set_action(
       FOOD: {
         text: '食材',
@@ -165,9 +182,6 @@ class LineClient
         type: 'web'
       },
       COOK: {
-        # text: 'レシピ',
-        # link_url: "#{HOST}/recipe/#{recipe.rid}",
-        # type: 'web'
         text: "#{recipe.name}をつくります！！！",
         params_text: "#{recipe.name}をつくります！！！",
         type: 'sendMessage'
