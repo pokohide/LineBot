@@ -104,10 +104,14 @@ class LineClient
   end
 
   def send_step step
-    @client.multiple_message.add_image(
-      image_url: step.image,
-      preview_url: step.image
-    ).add_text(
+    c = @client.multiple_message
+    if step.image.present?
+      c = c.add_image(
+        image_url: step.image,
+        preview_url: step.image
+      )
+    end
+    c.add_text(
       text: step.content
     ).send(
       to_mid: @to_mid
@@ -128,7 +132,7 @@ class LineClient
         x: 0,
         y: 0,
         width: 1020,
-        height: 100
+        height: 144
       ).send(
         to_mid: @to_mid,
         image_url: "#{HOST}/assets/next",
@@ -147,7 +151,7 @@ class LineClient
         x: 0,
         y: 0,
         width: 1020,
-        height: 100
+        height: 144
       ).send(
         to_mid: @to_mid,
         image_url: "#{HOST}/assets/finish",
