@@ -96,11 +96,13 @@ class LineClient
     @client.rich_message.set_action(
       FOOD: {
         text: '食材',
-        link_url: "#{HOST}/recipe/#{recipe.rid}/materials"
+        link_url: "#{HOST}/recipe/#{recipe.rid}/materials",
+        type: 'web'
       },
       RECIPE: {
         text: 'レシピ',
-        link_url: "#{HOST}/recipe/#{recipe.rid}"
+        link_url: "#{HOST}/recipe/#{recipe.rid}",
+        type: 'web'
       },
       COOK: {
         text: "#{recipe.name}をつくります！！！",
@@ -112,19 +114,19 @@ class LineClient
       x: 0,
       y: 0,
       width: 340,
-      height: 340
+      height: 1020
     ).add_listener(
       action: 'RECIPE',
       x: 341,
       y: 0,
       width: 340,
-      height: 340
+      height: 1020
     ).add_listener(
       action: 'COOK',
       x: 641,
       y: 0,
       width: 340,
-      height: 340
+      height: 1020
     ).send(
       to_mid: @to_mid,
       image_url: "#{HOST}/images/#{recipe.rid}",
