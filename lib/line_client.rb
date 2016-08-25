@@ -79,14 +79,14 @@ class LineClient
   def start_cooking name
     @user.cook = true
     @recipe = Recipe.find_by(name: name)
-    @user.rid = @recipe.rid
+    @user.r_id = @recipe.rid
     @user.now_step = 0
     @user.save
   end
 
   # 次のステップへ
   def next_step
-    @recipe = Recipe.find_by(rid: @user.rid)
+    @recipe = Recipe.find_by(r_id: @user.rid)
     step = @recipe.steps[@user.now_step]
     @user.update(now_step: @user.now_step + 1)
     send_step(step)
@@ -99,7 +99,7 @@ class LineClient
   def end_cooking
     @user.cook = false
     @user.now_step = nil
-    @user.rid = nil
+    @user.r_id = nil
     @user.save
   end
 
