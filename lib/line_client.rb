@@ -60,14 +60,18 @@ class LineClient
             start_cooking($1)
             next_step 0
           else
-            recipes = Recipe.like(@message.content[:text])
+            recipes = Recipe.like(@message.content[:text]).sh.limit(3)
             if recipes.count == 0
               send_text '見つかりませんでした。'
             else
-              #send_recipe recipes[0]
               recipe = recipes[0]
               send_text "#{recipe.name}を作りませんか?\n所要時間は#{recipe.time}で、費用は#{recipe.fee}です！"
               send_choice recipe
+              # 更新
+              recipes.each do |r|
+                r.touch
+                r.save
+              end
             end
           end
         when Line::Bot::Message::Sticker
