@@ -71,7 +71,16 @@ class LineClient
     end 
   end
 
-  def 
+  # 料理開始
+  def start_cooking
+    @user.cook = true
+
+  end
+
+  # 料理終了
+  def end_cooking
+    @user.cook = false
+  end
 
   def send_recipe recipe
     @client.multiple_message.add_text(
@@ -98,7 +107,7 @@ class LineClient
       COOK: {
         text: 'つくる',
         params_text: "#{recipe.name}をつくります！！！",
-        type: "sendMessage",
+        type: "sendMessage"
       }
     ).add_listener(
       action: 'FOOD',
