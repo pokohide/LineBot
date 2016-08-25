@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+  <title><%= title %></title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+  <![endif]-->
+  <style type="text/css">
+  <!--
+  body { margin: 0;padding: 0; }
+  .title {
+    font-size: 18px;
+    margin: 0;
+  }
+  h1 {
+    position: relative;
+    padding: 1em 0;
+  }
+  h1::before, h1::after {
+    position: absolute;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 6px;
+    box-sizing: border-box;
+  }
+  h1::before {
+    top: 0;
+    border-top: 2px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  h1::after {
+    bottom: 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
+  }
+  .sub-title {
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    margin: 0;
+  }
+  .sub-title .sub {
+    margin-right: 10px;
+  }
+  .sub i {
+    margin-right: 5px;
+  }
+  .recipe {
+    margin: 0;
+    padding: 0;
+  }
+  .recipe-header {
+    padding: 10px;
+    border-bottom: solid 1px #f2e2c5;
+    background-color: #f8eedd;
+    color: #665533;   
+  }
+  .recipe-sub-header {
+    padding: 10px;
+  }
+  .materials {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  .material {
+    padding: 15px 10px;
+    position: relative;
+    display: block;
+    vertical-align: middle;
+    border-bottom: 1px solid #ccc;
+  }
+  .material_name {
+    font-weight: bold;
+  }
+  .material_content {
+    float: right;
+    font-weight: bold;
+  }
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .image {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+  }
+  .check {
+    display: none;
+  }
+  .check + .checkbox-icon {
+    position: relative;
+    vertical-align: middle;
+  }
+  .check + .checkbox-icon:before {
+    content: "\f372";
+    font-family: "Ionicons";
+    color: #ccc;
+    font-size: 22px;
+  }
+  .check:checked + .checkbox-icon:before {
+    content: "\f374";
+    color: #17bcdf;
+  }
+  --> 
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="title"><%= title %></h1>
+    <p class="sub-title">
+      <span class="sub time"><i class="fa fa-clock-o"></i><%= time %></span>
+      <span class="sub fee"><i class="fa fa-jpy"></i><%= fee %></span>
+    </p>
+    <div class="image-wrapper">
+      <div class="image" style="background-image:url(<%= image %>)"></div>
+    </div>
+  </header>
+  <div id="contents">
+    <article class="recipe">
+      <div class="recipe-header">
+        材料(<%= portion %>)
+      </div>
+        <ul class="materials">
+          <% materials.each do |material| %>
+            <li class="material">
+              <input type="checkbox" name="check" id="<%= material[2] %>" />
+              <span class="checkbox-icon"></span>
+              <label for="<%= material[2] %>">
+                <span class="material_name"><%= material[0].sub(/＊/, '') %></span>
+                <span class="material_content"><%= material[1] %></span>
+              </label>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    </article>
+  </div>
+</body>
+</html>
