@@ -1,7 +1,17 @@
+# encoding: utf-8
 require "#{Rails.root}/lib/line_client"
 require "#{Rails.root}/lib/crawler"
 require 'line/bot'
 require 'RMagick'
+
+module Magick
+  class Draw
+    # Specify text drawing font
+    def font(name)
+      primitive "font '#{name}'"
+    end
+  end
+end
 
 class WebhookController < ApplicationController
 
@@ -37,10 +47,11 @@ class WebhookController < ApplicationController
       image = original.resize_to_fit(1024, 9999)
       draw = Magick::Draw.new
       begin
-        draw.font(Rails.root.join('app', 'public', 'fonts', 'font.ttf'))
+        #draw.font(Rails.root.join('fonts', 'font.otf'))
         # 文字の影 ( 1pt 右下へずらす )
         draw.annotate(image, 0, 0, 4, 4, recipe.name) do
           #self.font_family = "#{Rails.root}/publick/fonts/font.ttf"
+          self.font_family = "#{Rails.root}/fonts/font.otf"
           self.fill      = 'black'                   # フォント塗りつぶし色(黒)
           self.stroke    = 'transparent'             # フォント縁取り色(透過)
           self.pointsize = 50                        # フォントサイズ(16pt)
@@ -50,6 +61,7 @@ class WebhookController < ApplicationController
         # 文字
         draw.annotate(image, 0, 0, 5, 5, recipe.name) do
           #self.font_family = "#{Rails.root}/publick/fonts/font.ttf"
+          self.font_family = "#{Rails.root}/fonts/font.otf"
           self.fill      = 'white'                   # フォント塗りつぶし色(白)
           self.stroke    = 'transparent'             # フォント縁取り色(透過)
           self.pointsize = 50                        # フォントサイズ(16pt)
