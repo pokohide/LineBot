@@ -86,7 +86,7 @@ class LineClient
 
   # 次のステップへ
   def next_step
-    @recipe = Recipe.find_by(r_id: @user.rid)
+    @recipe = Recipe.find_by(rid: @user.r_id)
     step = @recipe.steps[@user.now_step]
     @user.update(now_step: @user.now_step + 1)
     send_step(step)
