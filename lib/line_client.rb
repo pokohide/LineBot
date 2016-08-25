@@ -81,12 +81,12 @@ class LineClient
               send_text '見つかりませんでした。'
             else
               recipe = recipes[0]
-              message = "#{recipe.name}作らない？？􀂍"
-              message += "#{recipe.time}かかるぜ\n" if recipe.time.present?
+              message = "#{recipe.name}つくらないかい？？􀂌"
+              message += "所要時間は#{recipe.time}" if recipe.time.present?
               if recipe.fee.present?
-                message += "費用は#{recipe.fee}かかるよ!"
+                message += "\n費用は#{recipe.fee}だぜ！􀂍"
               else
-                message += "費用はどのくらいかかるかわからない-_-"
+                message += "だぜ！􀂍\nすまんが、費用はわからない􀁼\n【レシピ】をタップしてみると、何かわかるかもしれないぞ！􀂎"
               end
               send_choice recipe
               # 更新
