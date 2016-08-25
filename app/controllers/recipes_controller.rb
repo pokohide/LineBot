@@ -27,6 +27,10 @@ class RecipesController < ApplicationController
     render html: tech_erb(result['yaku'])
   end
 
+  def share
+    render json: {rid: params[:rid]}
+  end
+
   private
   def erb(fname, opts)
     html = <<TEXT_END

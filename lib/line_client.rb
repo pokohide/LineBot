@@ -202,6 +202,7 @@ class LineClient
         alt_text: "次へ(手順#{@user.now_step}へ)"
       )
     else
+      recipe = Recipe.find_by(rid: @user.r_id)
       send_text("""
 お！完成したぞ！！􀂓􀂓
 大変だったな􀂔よくがんばったな􀂔
@@ -211,7 +212,7 @@ class LineClient
       @client.rich_message.set_action(
         SHARE: {
           text: 'シェアしよう',
-          link_url: "#{HOST}/recipe/#{recipe.rid}/materials",
+          link_url: "#{HOST}/share/#{recipe.rid}",
           type: 'web'        
         }
       ).add_listener(

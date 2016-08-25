@@ -13,4 +13,6 @@ Rails.application.routes.draw do
 
   get '/tech/cut/:id', to: 'recipes#cut'
   get '/tech/yaku/:id', to: 'recipes#yaku'
+
+  get '/share/:rid', to: 'recipes#share'
 end
