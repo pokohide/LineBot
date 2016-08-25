@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  r_id: 1
+  cook: false
+  mid: MyString
+  name: MyString
+
+two:
+  r_id: 1
+  cook: false
+  mid: MyString
+  name: MyString

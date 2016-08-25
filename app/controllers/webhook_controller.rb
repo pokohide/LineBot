@@ -16,9 +16,6 @@ class WebhookController < ApplicationController
     end
     receive_request = Line::Bot::Receive::Request.new(request.env)
     receive_request.data.each do |message|
-      user = User.find_or_create_by(mid: message)
-
-      userUser.find_or_create_by(uid: 'sample')
       c = LineClient.new(client, message)
       c.reply
     end

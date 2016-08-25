@@ -30,6 +30,7 @@ class LineClient
     @client = client
     @message = message
     @to_mid = message.from_mid
+    @user = User.find_or_create_by(mid: @to_mid.join)
   end
 
   def reply
@@ -39,41 +40,55 @@ class LineClient
       when Line::Bot::Operation::AddedAsFriend
         @client.send_text(
           to_mid: @to_mid,
-          text: "Hello"
-        )
-      end
-    when Line::Bot::Receive::Message
-      case @message.content
-      when Line::Bot::Message::Text
-        recipes = Recipe.like(@message.content[:text])
-        if recipes.count == 0
-          @client.send_text(
-            to_mid: @to_mid,
-            text: '見つかりませんでした。'
-          )
-        else
-          @client.send_text(
-            to_mid: @to_mid,
-            text: recipes[0].name
-          )
-        end
-        # crawler = Crawler.new(@message.content[:text])
-        # crawler.scrape
-        # @client.send_text(
-        #   to_mid: @to_mid,
-        #   text: @message.content[:text]
-        # )
-        # sent_recipe crawler.results[0]
-      when Line::Bot::Message::Sticker
-        @client.send_text(
-          to_mid: @to_mid,
           text: """
             料理bot登録してくれてありがとう！􀁺
             料理上手への道の第一歩を踏み出したそこのあなた􀁸
             これから一緒に料理を作っていって、料理レベルを上げていこう！✨
             上手くできたら友達に自慢できるかも？！􀂌
           """
-        )        
+        ) 
+      end
+    when Line::Bot::Receive::Message
+      if @user.cooking?
+        case @message.content
+        when Line::Bot::Message::Text
+          @client.send_text(
+            to_mid: @to_mid,
+            text: '質問ですか'
+          )
+        when Line::Bot::Message::Sticker
+          @client.send_text(
+            to_mid: @to_mid,
+            text: """
+              料理bot登録してくれてありがとう！􀁺
+              料理上手への道の第一歩を踏み出したそこのあなた􀁸
+              これから一緒に料理を作っていって、料理レベルを上げていこう！✨
+              上手くできたら友達に自慢できるかも？！􀂌
+            """
+          )        
+        end
+      else
+
+        case @message.content
+        when Line::Bot::Message::Text
+          recipes = Recipe.like(@message.content[:text])
+          if recipes.count == 0
+            @client.send_text(
+              to_mid: @to_mid,
+              text: '見つかりませんでした。'
+            )
+          else
+            @client.send_text(
+              to_mid: @to_mid,
+              text: recipes[0].name
+            )
+          end
+        when Line::Bot::Message::Sticker
+          @client.send_text(
+            to_mid: @to_mid,
+            text: 'okok'
+          )        
+        end
       end
     end 
   end
