@@ -49,11 +49,13 @@ namespace :recipes do
       json = Net::HTTP.get(uri)
       result = JSON.parse(json)
       r = result['recipe']
+      next unless r['material']
 
       recipe.portion = r['membernum']
       recipe.time = r['time']
       recipe.fee = r['fee']
       recipe.description = r['explanation']
+      
       r['material'].count.times do |i|
         material = Material.new(name: r['material']['name'][i], quantity: r['material']['quantity'][i])
         material.recipe = recipe
