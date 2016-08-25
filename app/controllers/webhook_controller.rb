@@ -95,7 +95,9 @@ class WebhookController < ApplicationController
         # image = image.append(true)
 
         choice = Magick::Image.read("#{Rails.root}/public/images/choice.jpg").first
-        image.composite!(choice, Magick::SouthWestGravity, Magick::OverCompositeOp)
+
+        image.composite!(choice, 0, image.rows.to_i - 57, Magick::OverCompositeOp)
+        #image.composite!(choice, Magick::SouthWestGravity, Magick::OverCompositeOp)
         #recipe.main = image.to_blob
         send_data image.to_blob
         #recipe.save
