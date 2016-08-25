@@ -97,7 +97,7 @@ class LineClient
       end
     end
     yaku.each_with_index do |y, index|
-      if message.include?(c)
+      if message.include?(y)
         tech(y, "yaku/#{index + 1}")
       end
     end
