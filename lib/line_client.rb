@@ -77,7 +77,8 @@ class LineClient
               text: '見つかりませんでした。'
             )
           else
-            sent_recipe recipes[0]
+            send_recipe recipes[0]
+            send_choice recipes[0]
           end
         when Line::Bot::Message::Sticker
           @client.send_text(
@@ -89,7 +90,18 @@ class LineClient
     end 
   end
 
-  def sent_recipe recipe
+  def send_image recipe
+    @client.multiple_message.add_text(
+      text: recipe.name
+    ).add_image(
+      image_url: recipe.image,
+      preview_url: recipe.image
+    ).send(
+      to_mid: @to_mid
+    )
+  end
+
+  def send_choice recipe
     Rails.logger.info(recipe.inspect)
     @client.rich_message.set_action(
       FOOD: {
