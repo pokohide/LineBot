@@ -93,6 +93,24 @@ class LineClient
 
   def send_choice recipe
     Rails.logger.info(recipe.inspect)
+    Rails.logger.info(FOOD: {
+        text: '食材',
+        link_url: "#{HOST}/recipe/#{recipe.rid}/materials",
+        type: 'web'
+      },
+      RECIPE: {
+        text: 'レシピ',
+        link_url: "#{HOST}/recipe/#{recipe.rid}",
+        type: 'web'
+      },
+      COOK: {
+        # text: 'レシピ',
+        # link_url: "#{HOST}/recipe/#{recipe.rid}",
+        # type: 'web'
+        text: "#{recipe.name}をつくります！！！",
+        params_text: "#{recipe.name}をつくります！！！",
+        type: 'sendMessage'
+      }).inspect
     @client.rich_message.set_action(
       FOOD: {
         text: '食材',
