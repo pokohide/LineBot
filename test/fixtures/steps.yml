@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  recipe_id: 1
+  image: MyString
+  content: MyString
+  turn: 1
+
+two:
+  recipe_id: 1
+  image: MyString
+  content: MyString
+  turn: 1
