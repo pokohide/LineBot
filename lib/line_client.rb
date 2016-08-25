@@ -105,28 +105,31 @@ class LineClient
         type: 'web'
       },
       COOK: {
-        text: 'レシピ',
-        link_url: "#{HOST}/recipe/#{recipe.rid}",
-        type: 'web'
+        # text: 'レシピ',
+        # link_url: "#{HOST}/recipe/#{recipe.rid}",
+        # type: 'web'
+        text: "#{recipe.name}をつくります！！！",
+        params_text: "#{recipe.name}をつくります！！！",
+        type: 'sendMessage'
       }
     ).add_listener(
       action: 'FOOD',
       x: 0,
       y: 0,
-      width: 340,
-      height: 1500
+      width: 300,
+      height: 700
     ).add_listener(
       action: 'RECIPE',
-      x: 341,
+      x: 301,
       y: 0,
-      width: 340,
-      height: 1500
+      width: 300,
+      height: 700
     ).add_listener(
       action: 'COOK',
-      x: 641,
+      x: 601,
       y: 0,
-      width: 340,
-      height: 1500
+      width: 300,
+      height: 700
     ).send(
       to_mid: @to_mid,
       image_url: "#{HOST}/images/#{recipe.rid}",
