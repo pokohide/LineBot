@@ -90,7 +90,7 @@ class LineClient
     end 
   end
 
-  def send_image recipe
+  def send_recipe recipe
     @client.multiple_message.add_text(
       text: recipe.name
     ).add_image(
