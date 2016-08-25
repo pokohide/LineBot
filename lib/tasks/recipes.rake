@@ -31,8 +31,6 @@ namespace :recipes do
       recipe.image = image
       recipe.name = name
       recipe.rid = id
-      #p recipe
-      #recipe.save
     end
   end
 
@@ -49,13 +47,13 @@ namespace :recipes do
       json = Net::HTTP.get(uri)
       result = JSON.parse(json)
       r = result['recipe']
-      next unless r['material']
-
+      
+      begin
       recipe.portion = r['membernum']
       recipe.time = r['time']
       recipe.fee = r['fee']
       recipe.description = r['explanation']
-      
+
       r['material'].count.times do |i|
         material = Material.new(name: r['material']['name'][i], quantity: r['material']['quantity'][i])
         material.recipe = recipe
@@ -68,6 +66,9 @@ namespace :recipes do
       end
       recipe.save
       p recipe
+      rescue
+        puts recipe.id
+      end
     end
     puts "END"
   end
