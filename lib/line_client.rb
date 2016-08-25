@@ -60,9 +60,16 @@ class LineClient
         case @message.content
         when Line::Bot::Message::Text
           if /(.+?)をつくります！！！/ =~ @message.content[:text]
-            send_text "#{$1}のクッキングを開始します！"
+            send_text """
+承知のすけ！􀁸
+よし！#{$1}を作るぞ！􀄃􀇐Moon satisfied􏿿
+材料は揃ってるかい？􀄃􀇚Moon kiss􏿿
+準備ができたら、準備OKボタンを押してくれ！􀂐
+            """
+            send_ok $1
+          elsif /(.+?)を作る準備ok/ =~ @message.content[:text]
             start_cooking($1)
-            next_step 0
+            next_step
           else
             recipes = Recipe.like(@message.content[:text]).sh.limit(3)
             if recipes.count == 0
@@ -245,6 +252,26 @@ class LineClient
       image_url: "#{HOST}/assets/giveup",
       alt_text: '諦める'
     )
+  end
+
+  def send_ok name
+    @client.rich_message.set_action(
+      OK: {
+        text: '準備ok',
+        params_text: "#{name}を作る準備ok",
+        type: 'sendMessage'
+      }
+    ).add_listener(
+      action: 'OK',
+      x: 0,
+      y: 0,
+      width: 1020,
+      height: 144
+    ).send(
+      to_mid: @to_mid,
+      image_url: "#{HOST}/assets/ok",
+      alt_text: '準備OK'
+    )    
   end
 
   def send_choice recipe
