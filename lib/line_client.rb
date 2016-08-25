@@ -44,7 +44,11 @@ class LineClient
       if @user.cooking?
         case @message.content
         when Line::Bot::Message::Text
-          send_text '質問ですか?'
+          if @message.content[:text] == '次へ'
+            next_step
+          else
+            send_text '質問ですか?'
+          end
         when Line::Bot::Message::Sticker
           send_text 'ステッカー送ってきたな！'      
         end
@@ -70,14 +74,50 @@ class LineClient
   end
 
   # 料理開始
-  def start_cooking
+  def start_cooking name
     @user.cook = true
+    @recipe = Recipe.find_by(name: name)
+    @user.rid = @recipe.rid
+    @user.now_step = 0
+    @user.save
+  end
 
+  # 次のステップへ
+  def next_step
+    @recipe = Recipe.find_by(rid: @user.rid)
+    step = @recipe.steps[@user.now_step]
+    @user.update(now_step: @user.now_step + 1)
+    next? = @recipe.steps[@user.now_step].present?
+    send_step step
+    next_step_button next?
   end
 
   # 料理終了
   def end_cooking
     @user.cook = false
+    @user.now_step = nil
+    @user.rid = nil
+    @user.save
+  end
+
+  def send_step step
+    @client.multiple_message.add_image(
+      image_url: step.image,
+      preview_url: step.image
+    ).add_text(
+      text: step.content
+    ).send(
+      to_mid: @to_mid
+    )
+  end
+
+  # 次のステップがあるかどうか
+  def next_step_button next?
+    if next?
+      send_text('次はないぞ')
+    else
+      send_text('ok')
+    end  
   end
 
   def send_recipe recipe
