@@ -48,7 +48,12 @@ class LineClient
             next_step $1.to_i
           elsif /(.+?)を諦めます/ =~ @message.content[:text]
             recipe = Recipe.find_by(name: $1)
-            send_text "#{recipe.name}のクッキングを諦めたよ！\n次頑張ろう(･∀･)"
+            send_text """
+#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
+人間生きてりゃいろいろあるよな！􀂔
+よくここまでがんばった􀁼切り替えて、次いこ次！􀁹
+また話しかけてくれよな！􀂍✨
+            """
             end_cooking
           else
             send_giveup
@@ -327,7 +332,12 @@ class LineClient
 ムーンとお料理を友達登録してくれてありがとう􀁹
 これから一緒に料理マスター🍳を目指そうぜ􀂌
 
-食べたい料理があるとき、僕に話しかけてね􀄃􀇗Moon hehe􏿿
+まった！􀁽
+料理マスター？􀂎無理だろっ􀂑なんて思っただろ？？
+
+心配するな！􀄃􀇜Moon ok􏿿俺が一つ一つ丁寧に教えるからな！􀄃􀇑Moon cool􏿿✨
+
+食べたい料理があるとき、僕に話しかけてくれ！􀄃􀇗Moon hehe􏿿
 その料理の作り方をあなたのペースに合わせて教えるよ！􀄃􀇕Moon angel􏿿✨
 
 食べたいものがないけど料理したいなー􀂌ってときは【オススメ】ってLINE してね􀂍
