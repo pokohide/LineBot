@@ -114,9 +114,10 @@ class LineClient
         text: 'レシピ',
         link_url: "#{HOST}/recipe/#{recipe.rid}"
       },
-      START: {
+      COOK: {
         text: 'つくる',
-        link_url: "#{HOST}/api/cook?mid=#{@to_mid}&rid=#{recipe.rid}"
+        params_text: "#{recipe.name}をつくる",
+        type: "sendMessage",
       }
     ).add_listener(
       action: 'FOOD',
