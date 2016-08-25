@@ -30,7 +30,8 @@ class LineClient
     @client = client
     @message = message
     @to_mid = message.from_mid
-    @user = User.find_or_create_by(mid: @to_mid.join)
+    @mid = @to_mid.join
+    @user = User.find_or_create_by(mid: @mid)
   end
 
   def reply
@@ -68,7 +69,6 @@ class LineClient
           )        
         end
       else
-
         case @message.content
         when Line::Bot::Message::Text
           recipes = Recipe.like(@message.content[:text])
@@ -78,10 +78,7 @@ class LineClient
               text: '見つかりませんでした。'
             )
           else
-            @client.send_text(
-              to_mid: @to_mid,
-              text: recipes[0].name
-            )
+            sent_recipe recipes[0]
           end
         when Line::Bot::Message::Sticker
           @client.send_text(
@@ -96,26 +93,36 @@ class LineClient
   def sent_recipe recipe
     Rails.logger.info(recipe.inspect)
     @client.rich_message.set_action(
-      YES: {
-        text: 'Yes',
-        link_url: 'https://www.google.co.jp/#q=yes'
+      FOOD: {
+        text: '食材',
+        link_url: "#{HOST}/recipe/#{recipe.rid}/materials"
       },
-      NO: {
-        text: 'Yes',
-        link_url: 'https://www.google.co.jp/#q=no'
+      RECIPE: {
+        text: 'レシピ',
+        link_url: "#{HOST}/recipe/#{recipe.rid}"
+      },
+      START: {
+        text: 'つくる',
+        link_url: "#{HOST}/api/cook?mid=#{@mid}&rid=#{recipe.rid}"
       }
     ).add_listener(
-      action: 'YES',
+      action: 'FOOD',
       x: 0,
       y: 0,
-      width: 520,
-      height: 520
+      width: 340,
+      height: 340
     ).add_listener(
-      action: 'NO',
-      x: 521,
+      action: 'RECIPE',
+      x: 341,
       y: 0,
-      width: 520,
-      height: 520
+      width: 340,
+      height: 340
+    ).add_listener(
+      action: 'START',
+      x: 641,
+      y: 0,
+      width: 340,
+      height: 340
     ).send(
       to_mid: @to_mid,
       image_url: "#{HOST}/images/#{recipe.id}",
