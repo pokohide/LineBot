@@ -80,15 +80,17 @@ class LineClient
             if recipes.count == 0
               send_text '見つかりませんでした。'
             else
-              recipe = recipes[0]
-              message = "#{recipe.name}つくらないかい？？􀂌"
-              message += "所要時間は#{recipe.time}" if recipe.time.present?
-              if recipe.fee.present?
-                message += "\n費用は#{recipe.fee}だぜ！􀂍"
-              else
-                message += "だぜ！􀂍\nすまんが、費用はわからない􀁼\n【レシピ】をタップしてみると、何かわかるかもしれないぞ！􀂎"
+              recipes.each do |recipe|
+                message = "#{recipe.name}つくらないかい？？􀂌"
+                message += "所要時間は#{recipe.time}" if recipe.time.present?
+                if recipe.fee.present?
+                  message += "\n費用は#{recipe.fee}だぜ！􀂍"
+                else
+                  message += "だぜ！􀂍\nすまんが、費用はわからない􀁼\n【レシピ】をタップしてみると、何かわかるかもしれないぞ！􀂎"
+                end
+                send_text message
+                send_choice recipe
               end
-              send_choice recipe
               # 更新
               recipes.each do |r|
                 r.touch
