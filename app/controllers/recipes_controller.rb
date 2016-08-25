@@ -1,6 +1,8 @@
 class RecipesController < ApplicationController
   include ActionView::Helpers::OutputSafetyHelper
   require 'erb'
+
+  HOST = 'https://mighty-shelf-27620.herokuapp.com'
   
   def show
     @recipe = Recipe.find_by(rid: params[:rid])
@@ -13,6 +15,16 @@ class RecipesController < ApplicationController
     @materials = @recipe.materials.map {|m| [m.name, m.quantity, m.id]}
 
     render html: erb('materials', {title: @recipe.name, portion: @recipe.portion, image: @recipe.image, time: @recipe.time, fee: @recipe.fee, materials: @materials}), layout: false
+  end
+
+  def cut
+    result = tech_url('cut', params[:id])
+    render html: tech_erb(result['cut'])
+  end
+
+  def yaku
+    result = tech_url('yaku', params[:id])
+    render html: tech_erb(result['yaku'])
   end
 
   private
@@ -28,5 +40,21 @@ class RecipesController < ApplicationController
 TEXT_END
     html += File.open("#{Rails.root}/app/views/recipes/#{fname}.html.erb", 'r').read
     ERB.new(html).result.html_safe
+  end
+
+  def tech_erb(opts)
+    html = <<TEXT_END
+      <% name = '#{opts["name"]}' %>
+      <% image = '#{opts["image"] || ""}' %>
+      <% explanation = '#{opts["explanation"]}' %>
+TEXT_END
+    html += File.open("#{Rails.root}/app/views/recipes/tech.html.erb", 'r').read
+    ERB.new(html).result.html_safe
+  end
+
+  def tech_url(tech, id)
+    uri = URI.parse("#{HOST}/#{tech}/#{id}")
+    json = Net::HTTP.get(uri)
+    JSON.parse(json)
   end
 end

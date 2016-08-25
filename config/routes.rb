@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   get '/recipe/:rid', to: 'recipes#show'
   get '/recipe/:rid/materials', to: 'recipes#materials'
   get '/assets/:path/:size', to: 'webhook#assets'
+
+  get '/tech/cut/:id', to: 'recipes#cut'
+  get '/tech/yaku/:id', to: 'recipes#yaku'
 end

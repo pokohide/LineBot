@@ -130,19 +130,18 @@
       <div class="recipe-header">
         作り方
       </div>
-        <ol class="steps">
-          <% steps.each do |step| %>
-            <li class="step">
-              <% if step[1].size != 0 %>
-                <div class="figure">
-                  <img src="<%= step[1] %>" class="figure-image" />
-                </div>
-              <% end %>
-              <p class="note"><%= step[2] %></p> 
-            </li>
-          <% end %>
-        </ul>
-      </section>
+      <ol class="steps">
+        <% steps.each do |step| %>
+          <li class="step">
+            <% if step[1].size != 0 %>
+              <div class="figure">
+                <img src="<%= step[1] %>" class="figure-image" />
+              </div>
+            <% end %>
+            <p class="note"><%= step[2] %></p> 
+          </li>
+        <% end %>
+      </ol>
     </article>
   </div>
 </body>
