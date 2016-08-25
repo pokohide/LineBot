@@ -74,14 +74,20 @@ class LineClient
             send_ok $1
           elsif /(.+?)を作る準備ok/ =~ @message.content[:text]
             start_cooking($1)
-            next_step
+            next_step 0
           else
             recipes = Recipe.like(@message.content[:text]).sh.limit(3)
             if recipes.count == 0
               send_text '見つかりませんでした。'
             else
               recipe = recipes[0]
-              send_text "#{recipe.name}作らない？？􀂍　\n所要時間は#{recipe.time}\n費用は#{recipe.fee}\nだよ！"
+              message = "#{recipe.name}作らない？？􀂍"
+              message += "#{recipe.time}かかるぜ\n" if recipe.time.present?
+              if recipe.fee.present?
+                message += "費用は#{recipe.fee}かかるよ!"
+              else
+                message += "費用はどのくらいかかるかわからない-_-"
+              end
               send_choice recipe
               # 更新
               recipes.each do |r|
