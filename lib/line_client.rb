@@ -48,21 +48,17 @@ class LineClient
             next_step $1.to_i
           elsif /諦める/ =~ @message.content[:text]
             recipe = Recipe.find_by(rid: @user.r_id)
-            send_text """
-#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
+            send_text """#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
 人間生きてりゃいろいろあるよな！􀂔
 よくここまでがんばった􀁼切り替えて、次いこ次！􀁹
-また話しかけてくれよな！􀂍✨
-            """
+また話しかけてくれよな！􀂍✨"""
             end_cooking            
           elsif /(.+?)を諦めます/ =~ @message.content[:text]
             recipe = Recipe.find_by(name: $1)
-            send_text """
-#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
+            send_text """#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
 人間生きてりゃいろいろあるよな！􀂔
 よくここまでがんばった􀁼切り替えて、次いこ次！􀁹
-また話しかけてくれよな！􀂍✨
-            """
+また話しかけてくれよな！􀂍✨"""
             end_cooking
           else
             send_giveup
@@ -74,12 +70,10 @@ class LineClient
         case @message.content
         when Line::Bot::Message::Text
           if /(.+?)をつくります！！！/ =~ @message.content[:text]
-            send_text """
-承知のすけ！􀁸
+            send_text """承知のすけ！􀁸
 よし！#{$1}を作るぞ！􀄃􀇐Moon satisfied􏿿
 材料は揃ってるかい？􀄃􀇚Moon kiss􏿿
-準備ができたら、準備OKボタンを押してくれ！􀂐
-            """
+準備ができたら、準備OKボタンを押してくれ！􀂐"""
             send_ok $1
           elsif /(.+?)を作る準備ok/ =~ @message.content[:text]
             start_cooking($1)
@@ -247,12 +241,10 @@ class LineClient
       )
     else
       recipe = Recipe.find_by(rid: @user.r_id)
-      send_text("""
-お！完成したぞ！！􀂓􀂓
+      send_text("""お！完成したぞ！！􀂓􀂓
 大変だったな􀂔よくがんばったな􀂔
 ぜひ作った料理🍳をみんなにシェアしようぜ！􀂍
-また料理作りたくなったら俺に話しかけてくれよなっ􀁺
-      """)
+また料理作りたくなったら俺に話しかけてくれよなっ􀁺""")
       @client.rich_message.set_action(
         SHARE: {
           text: 'シェアしよう',
@@ -373,8 +365,7 @@ class LineClient
   def introduce_myself
     @client.send_text(
       to_mid: @to_mid,
-      text: """
-ムーンとお料理を友達登録してくれてありがとう􀁹
+      text: """ムーンとお料理を友達登録してくれてありがとう􀁹
 これから一緒に料理マスター🍳を目指そうぜ􀂌
 
 まった！􀁽
@@ -386,8 +377,7 @@ class LineClient
 その料理の作り方をあなたのペースに合わせて教えるよ！􀄃􀇕Moon angel􏿿✨
 
 食べたいものがないけど料理したいなー􀂌ってときは【オススメ】ってLINE してね􀂍
-僕が君にとっておきのレシピを紹介するよ􀄃􀇡Moon attracted􏿿
-      """
+僕が君にとっておきのレシピを紹介するよ􀄃􀇡Moon attracted􏿿"""
     )
     @client.send_text(
       to_mid: @to_mid,
