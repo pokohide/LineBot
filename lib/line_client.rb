@@ -57,6 +57,7 @@ class LineClient
         when Line::Bot::Message::Text
           if /(.+?)をつくります！！！/ =~ @message.content[:text]
             send_text "#{$1}のクッキングを開始します！"
+            start_cooking
           else
             recipes = Recipe.like(@message.content[:text])
             if recipes.count == 0

@@ -32,9 +32,17 @@ class WebhookController < ApplicationController
     end
     render :nothing => true, status: :ok
   end
-  
-  def cook
-    render json: {rid: params[:rid], mid: params[:mid]}
+ 
+  def assets
+    if params[:path] == 'next'
+      open("#{Rails.root}/public/images/next.jpg") do |data|
+        send_data(data.read, :disposition => "inline", :type => "image/jpeg")
+      end
+    elsif params[:path] == 'finish'
+      open("#{Rails.root}/public/images/finish.jpg") do |data|
+        send_data(data.read, :disposition => "inline", :type => "image/jpeg")
+      end
+    end
   end
 
   def image
