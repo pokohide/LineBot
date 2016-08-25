@@ -3,25 +3,150 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes">
-  <title>レシピ</title>
+  <title><%= title %></title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
   <!--[if lt IE 9]>
   <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <script src="//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
   <![endif]-->
+  <style type="text/css">
+  <!--
+  body { margin: 0;padding: 0; }
+  .title {
+    font-size: 18px;
+    margin: 0;
+  }
+  h1 {
+    position: relative;
+    padding: 1em 0;
+  }
+  h1::before, h1::after {
+    position: absolute;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 6px;
+    box-sizing: border-box;
+  }
+  h1::before {
+    top: 0;
+    border-top: 2px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  h1::after {
+    bottom: 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
+  }
+  .sub-title {
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    margin: 0;
+  }
+  .sub-title .sub {
+    margin-right: 10px;
+  }
+  .sub i {
+    margin-right: 5px;
+  }
+  .recipe {
+    margin: 0;
+    padding: 0;
+  }
+  .recipe-header {
+    padding: 10px;
+    border-bottom: solid 1px #f2e2c5;
+    background-color: #f8eedd;
+    color: #665533;   
+  }
+  .recipe-sub-header {
+    padding: 10px;
+  }
+  .steps {
+    margin: 0;
+    padding: 0;
+    counter-reset: li;
+    list-style: none;
+    padding-left: 0;
+  }
+  .steps .step {
+    position: relative;
+    padding-left: 2.5em;
+    border-bottom: 1px dotted #ccc;
+    margin-top: 5px;
+    -webkit-background-size: 5px 2px;
+    -moz-background-size: 5px 2px;
+    -o-background-size: 5px 2px;
+    background-size: 5px 2px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .steps .step:before {
+    content: counter(li) "";
+    counter-increment: li;
+    position: absolute;
+    left: 5px;
+    width: 1.8em;
+    height: 1.8em;
+    background: #ddd;
+    color: #333;
+    line-height: 1.8;
+    text-align: center;   
+  }
+  .steps .step .figure {
+    margin-right: 10px;
+    width: auto;
+    display: block;
+  }
+  .note {
+    webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+    padding-right: 5px;
+    margin: 5px;
+    color: #665533;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .image {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+  }
+  --> 
+  </style>
 </head>
 <body>
   <header>
-    <h3>豚肉ブロッコリーキムチのたれ炒め レシピ・作り方</h3>
+    <h1 class="title"><%= title %></h1>
+    <p class="sub-title">
+      <span class="sub time"><i class="fa fa-clock-o"></i><%= time %></span>
+      <span class="sub fee"><i class="fa fa-jpy"></i><%= fee %></span>
+    </p>
+    <div class="image-wrapper">
+      <div class="image" style="background-image:url(<%= image %>)"></div>
+    </div>
   </header>
   <div id="contents">
-    <article class="comic">
-      <section>
-        <h4>材 料（１人分）</h4>
-        <h5>約15分&nbsp;&nbsp;300円前後</h5>
-        <ul>
-          <li><input type="checkbox" name="riyu" value="1" checked="checked">豚肉&nbsp;150g</li>
-          <li><input type="checkbox" name="riyu" value="2">ブロッコリー&nbsp;３２ｇ</li>
-          <li><input type="checkbox" name="riyu" value="3">酒&nbsp;小匙０、５</li>
+    <article class="recipe">
+      <div class="recipe-header">
+        作り方
+      </div>
+        <ol class="steps">
+          <% steps.each do |step| %>
+            <li class="step">
+              <div class="figure">
+                <img src="<%= step[1] %>" class="figure-image" />
+              </div>
+              <p class="note"><%= step[2] %></p> 
+            </li>
+          <% end %>
         </ul>
       </section>
     </article>
