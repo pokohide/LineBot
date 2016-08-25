@@ -79,7 +79,10 @@
     -moz-background-size: 5px 2px;
     -o-background-size: 5px 2px;
     background-size: 5px 2px;
-    display: flex;
+    display:-webkit-box;/*--- Androidブラウザ用 ---*/
+    display:-ms-flexbox;/*--- IE10 ---*/
+    display:-webkit-flex;/*--- safari（PC）用 ---*/
+    display:flex;
     align-items: flex-start;
   }
   .steps .step:before {
