@@ -264,20 +264,20 @@ class LineClient
       action: 'FOOD',
       x: 0,
       y: 0,
-      width: 200,
-      height: 600
+      width: 340,
+      height: 1020
     ).add_listener(
       action: 'RECIPE',
-      x: 201,
+      x: 341,
       y: 0,
-      width: 200,
-      height: 600
+      width: 340,
+      height: 1020
     ).add_listener(
       action: 'COOK',
-      x: 401,
+      x: 681,
       y: 0,
-      width: 200,
-      height: 600
+      width: 340,
+      height: 1020
     ).send(
       to_mid: @to_mid,
       image_url: "#{HOST}/images/#{recipe.rid}",
