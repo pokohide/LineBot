@@ -77,8 +77,10 @@ class LineClient
               text: '見つかりませんでした。'
             )
           else
-            send_recipe recipes[0]
-            send_choice recipes[0]
+            3.times do |i|
+              send_recipe recipes[i]
+              send_choice recipes[i]
+            end
           end
         when Line::Bot::Message::Sticker
           @client.send_text(
