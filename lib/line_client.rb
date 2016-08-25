@@ -83,7 +83,7 @@ class LineClient
             send_ok $1
           elsif /(.+?)を作る準備ok/ =~ @message.content[:text]
             start_cooking($1)
-            next_step 0
+            next_step 1
           elsif /おすすめ|オススメ|お腹|空いた|何か/ =~ @message.content[:text]
             recipes = Recipe.sh.limit(3)
             recipes.each_with_index do |recipe, index|
@@ -191,7 +191,7 @@ class LineClient
 
   # 次のステップへ
   def next_step num
-    @recipe = Recipe.find_by(rid: @user.r_id)
+    @recipe = Recipe.find_by(rid: @user.r_id) 
     step = @recipe.steps[num - 1]
 
     send_step(step)
