@@ -46,11 +46,15 @@ class LineClient
         when Line::Bot::Message::Text
           if /次へ\(手順(\d+)へ\)/ =~ @message.content[:text]
             next_step $1.to_i
+          elsif /(.+?)を諦めます/ =~ @message.content[:text]
+            recipe = Recipe.find_by(name: $1)
+            send_text "#{recipe.name}のクッキングを諦めたよ！\n次頑張ろう(･∀･)"
+            end_cooking
           else
-            send_text '質問ですか?'
+            send_giveup
           end
         when Line::Bot::Message::Sticker
-          send_text 'ステッカー送ってきたな！'      
+          send_text '料理に行き詰まってるんかい?'
         end
       else
         case @message.content
@@ -214,6 +218,27 @@ class LineClient
       preview_url: recipe.image
     ).send(
       to_mid: @to_mid
+    )
+  end
+
+  def send_giveup
+    recipe = Recipe.find_by(rid: @user.r_id)
+    @client.rich_message.set_action(
+      GIVEUP: {
+        text: 'あきらめる',
+        params_text: "#{recipe.name}を諦めます",
+        type: 'sendMessage'
+      }
+    ).add_listener(
+      action: 'GIVEUP',
+      x: 0,
+      y: 0,
+      width: 1020,
+      height: 144
+    ).send(
+      to_mid: @to_mid,
+      image_url: "#{HOST}/assets/giveup",
+      alt_text: '諦める'
     )
   end
 
