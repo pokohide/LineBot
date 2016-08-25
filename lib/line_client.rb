@@ -140,7 +140,7 @@ class LineClient
         alt_text: "次へ(手順#{@user.now_step}へ)"
       )
     else
-      @client.send_text 'お疲れ様でした！'
+      send_text('お疲れ様でした！')
       @client.rich_message.set_action(
         SHARE: {
           text: 'シェアしよう',
