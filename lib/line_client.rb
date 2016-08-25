@@ -44,8 +44,8 @@ class LineClient
       if @user.cooking?
         case @message.content
         when Line::Bot::Message::Text
-          if @message.content[:text] == '次へ'
-            next_step
+          if /次へ\(手順(\d+)へ\)/ =~ @message.content[:text]
+            next_step $1.to_i
           else
             send_text '質問ですか?'
           end
@@ -58,7 +58,7 @@ class LineClient
           if /(.+?)をつくります！！！/ =~ @message.content[:text]
             send_text "#{$1}のクッキングを開始します！"
             start_cooking($1)
-            next_step
+            next_step 0
           else
             recipes = Recipe.like(@message.content[:text])
             if recipes.count == 0
@@ -87,13 +87,12 @@ class LineClient
   end
 
   # 次のステップへ
-  def next_step
+  def next_step num
     @recipe = Recipe.find_by(rid: @user.r_id)
-    step = @recipe.steps[@user.now_step]
-    @user.update(now_step: @user.now_step + 1)
+    step = @recipe.steps[num]
     send_step(step)
-
-    if_next = @recipe.steps[@user.now_step].present?
+    if_next = @recipe.steps[num + 1].present?
+    @user.update(now_step: num + 1)
     next_step_button if_next
   end
 
@@ -125,8 +124,8 @@ class LineClient
     if if_next
       @client.rich_message.set_action(
         NEXT: {
-          text: "次へ",
-          params_text: "次へ",
+          text: "次へ(手順#{@user.now_step}へ)",
+          params_text: "次へ(手順#{@user.now_step}へ)",
           type: 'sendMessage'          
         }
       ).add_listener(
@@ -138,7 +137,7 @@ class LineClient
       ).send(
         to_mid: @to_mid,
         image_url: "#{HOST}/assets/next",
-        alt_text: '次へ'
+        alt_text: "次へ(手順#{@user.now_step}へ)"
       )
     else
       @client.send_text 'お疲れ様でした！'
