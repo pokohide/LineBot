@@ -21,7 +21,10 @@ class WebhookController < ApplicationController
     end
     render :nothing => true, status: :ok
   end
-
+  
+  def cook
+    render json: {rid: params[:rid], mid: params[:mid]}
+  end
 
   def image
     recipe = Recipe.find_by(rid: params[:rid])
