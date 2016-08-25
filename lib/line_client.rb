@@ -58,10 +58,8 @@ class LineClient
             if recipes.count == 0
               send_text '見つかりませんでした。'
             else
-              3.times do |i|
-                send_recipe recipes[i]
-                send_choice recipes[i]
-              end
+              #send_recipe recipes[0]
+              send_choice recipes[0]
             end
           end
         when Line::Bot::Message::Sticker
@@ -105,9 +103,9 @@ class LineClient
         link_url: "#{HOST}/recipe/#{recipe.rid}"
       },
       COOK: {
-        text: 'つくる',
+        text: "#{recipe.name}をつくります！！！",
         params_text: "#{recipe.name}をつくります！！！",
-        type: "sendMessage"
+        type: 'sendMessage'
       }
     ).add_listener(
       action: 'FOOD',
@@ -122,7 +120,7 @@ class LineClient
       width: 340,
       height: 340
     ).add_listener(
-      action: 'START',
+      action: 'COOK',
       x: 641,
       y: 0,
       width: 340,
