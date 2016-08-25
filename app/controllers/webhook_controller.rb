@@ -34,12 +34,9 @@ class WebhookController < ApplicationController
   end
  
   def assets
-    if params[:path] == 'next'
-      open("#{Rails.root}/public/images/next.jpg") do |data|
-        send_data(data.read, :disposition => "inline", :type => "image/jpeg")
-      end
-    elsif params[:path] == 'finish'
-      open("#{Rails.root}/public/images/finish.jpg") do |data|
+    case params[:path]
+    when 'next', 'finish', 'giveup'
+      open("#{Rails.root}/public/images/#{params[:path]}.jpg") do |data|
         send_data(data.read, :disposition => "inline", :type => "image/jpeg")
       end
     end
