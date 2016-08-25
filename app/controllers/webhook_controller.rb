@@ -45,6 +45,18 @@ class WebhookController < ApplicationController
     end
   end
 
+  def cut
+    open("#{Rails.root}/public/images/cut/#{params[:id]}.jpg") do |data|
+      send_data(data.read, :disposition => "inline", :type => "image/jpeg")
+    end
+  end
+
+  def yaku
+    open("#{Rails.root}/public/images/yaku/#{params[:id]}.jpg") do |data|
+      send_data(data.read, :disposition => "inline", :type => "image/jpeg")
+    end
+  end
+
   def image
     recipe = Recipe.find_by(rid: params[:rid])
 
