@@ -188,7 +188,12 @@ class LineClient
         alt_text: "次へ(手順#{@user.now_step}へ)"
       )
     else
-      send_text('お疲れ様でした！')
+      send_text("""
+お！完成したぞ！！􀂓􀂓
+大変だったな􀂔よくがんばったな􀂔
+ぜひ作った料理🍳をみんなにシェアしようぜ！􀂍
+また料理作りたくなったら俺に話しかけてくれよなっ􀁺
+      """)
       @client.rich_message.set_action(
         SHARE: {
           text: 'シェアしよう',
