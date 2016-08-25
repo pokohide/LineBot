@@ -28,7 +28,14 @@ class RecipesController < ApplicationController
   end
 
   def share
-    render json: {rid: params[:rid]}
+    ua = request.env["HTTP_USER_AGENT"]
+    if ua.include?('Mobile')
+      redirect_to 'intent://hoge.com#Intent;scheme=twitter;package=twitter.activity;end'
+    elsif ua.include?('Android')
+      render html: File.open("#{Rails.root}/app/views/recipes/share.html.erb")
+    else
+      render json: {rid: params[:rid]}
+    end
   end
 
   private
