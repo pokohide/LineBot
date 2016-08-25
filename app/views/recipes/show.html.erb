@@ -79,11 +79,7 @@
     -moz-background-size: 5px 2px;
     -o-background-size: 5px 2px;
     background-size: 5px 2px;
-    display:-webkit-box;/*--- Androidブラウザ用 ---*/
-    display:-ms-flexbox;/*--- IE10 ---*/
-    display:-webkit-flex;/*--- safari（PC）用 ---*/
-    display:flex;
-    align-items: flex-start;
+    overflow: auto;
   }
   .steps .step:before {
     content: counter(li) "";
@@ -99,28 +95,21 @@
   }
   .steps .step .figure {
     margin-right: 10px;
-    width: auto;
     display: block;
+    float: left;
+    width: 150px;
+    height: auto;
+  }
+  .figure .figure-image {
+    width: 100%;
+    height: auto;
   }
   .note {
-    webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -ms-box-flex: 1;
-    box-flex: 1;
     padding-right: 5px;
     margin: 5px;
     color: #665533;
     font-size: 16px;
     word-wrap: break-word;
-  }
-  .image-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  .image {
-    width: 100%;
-    height: 250px;
-    background-size: cover;
   }
   --> 
   </style>
@@ -144,9 +133,11 @@
         <ol class="steps">
           <% steps.each do |step| %>
             <li class="step">
-              <div class="figure">
-                <img src="<%= step[1] %>" class="figure-image" />
-              </div>
+              <% if step[1].size != 0 %>
+                <div class="figure">
+                  <img src="<%= step[1] %>" class="figure-image" />
+                </div>
+              <% end %>
               <p class="note"><%= step[2] %></p> 
             </li>
           <% end %>
