@@ -38,7 +38,7 @@ class LineClient
     when Line::Bot::Receive::Operation
       case data.content
       when Line::Bot::Operation::AddedAsFriend
-        introduce_myself
+        introduce_myself # in private
       end
     when Line::Bot::Receive::Message
       if @user.cooking?
@@ -46,6 +46,15 @@ class LineClient
         when Line::Bot::Message::Text
           if /次へ\(手順(\d+)へ\)/ =~ @message.content[:text]
             next_step $1.to_i
+          elsif /諦める/ =~ @message.content[:text]
+            recipe = Recipe.find_by(rid: @user.r_id)
+            send_text """
+#{recipe.name}のクッキングを途中で終了したぜ􀄃􀇓Moon unamused􏿿
+人間生きてりゃいろいろあるよな！􀂔
+よくここまでがんばった􀁼切り替えて、次いこ次！􀁹
+また話しかけてくれよな！􀂍✨
+            """
+            end_cooking            
           elsif /(.+?)を諦めます/ =~ @message.content[:text]
             recipe = Recipe.find_by(name: $1)
             send_text """
@@ -59,7 +68,7 @@ class LineClient
             send_giveup
           end
         when Line::Bot::Message::Sticker
-          send_text '料理に行き詰まってるんかい?'
+          when_stamp # in private
         end
       else
         case @message.content
@@ -101,7 +110,7 @@ class LineClient
           else
             recipes = Recipe.like(@message.content[:text]).sh.limit(3)
             if recipes.count == 0
-              send_text '見つかりませんでした。'
+              when_nothing # in private
             else
               recipes.each_with_index do |recipe, index|
                 if index == 0
@@ -391,5 +400,24 @@ class LineClient
       to_mid: @to_mid,
       text: text
     )   
+  end
+
+  def when_nothing
+    send_text '見つかりませんでした。'
+  end
+
+  def when_stamp
+    texts = ["""料理中にスタンプ送るなんて余裕だな！􀂌
+このステップが終わったら【次へ】をおしてくれっ！􀂏""",
+      """お、どした？􀁻
+もし途中で作るのをやめる場合は【諦める】とLINEしてくれ􀁼""",
+      """スタンプ送るなんて、レシピになかったぜ？？􀄃􀇏Moon cry􏿿
+集中しないと、料理を作り終わらないぞ！􀄃􀇓Moon unamused􏿿
+がんばれ！􀁹""",
+      """よし、ちょっと飽きたら、休憩しようか􀄃􀇗Moon hehe􏿿
+なにも、すべてを完璧にする必要はないんだ􀁺ぼちぼちやっていこうぜ􀂍✨""",
+      """がんばれ􀁹􀁹􀁹􀁹君ならできるぞ！！􀄃􀇡Moon attracted􏿿􀄃􀇡Moon attracted􏿿􀄃􀇡Moon attracted􏿿􀄃􀇡Moon attracted􏿿フレーー！􀄃􀇐Moon satisfied􏿿フレーー！􀄃􀇐Moon satisfied􏿿フレーー！􀄃􀇐Moon satisfied􏿿"""
+    ]
+    send_text texts[rand(texts.count)]
   end
 end
