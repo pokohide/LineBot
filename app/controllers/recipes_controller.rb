@@ -32,7 +32,7 @@ class RecipesController < ApplicationController
     if ua.include?('Mobile')
       redirect_to 'intent://hoge.com#Intent;scheme=twitter;package=twitter.activity;end'
     elsif ua.include?('Android')
-      render html: File.open("#{Rails.root}/app/views/recipes/share.html.erb")
+      render html: File.open("#{Rails.root}/app/views/recipes/share.html").html_safe
     else
       render json: {rid: params[:rid]}
     end
