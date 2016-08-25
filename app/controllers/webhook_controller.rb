@@ -65,7 +65,7 @@ class WebhookController < ApplicationController
     else
       begin
         original = Magick::Image.read(recipe.image).first
-        image = original.resize_to_fit(400, 400)
+        image = original.resize_to_limit(600, 600)
 
         # draw = Magick::Draw.new
         # draw.font(Rails.root.join('fonts', 'font.otf'))
@@ -96,7 +96,7 @@ class WebhookController < ApplicationController
 
         choice = Magick::Image.read("#{Rails.root}/public/images/choice.jpg").first
 
-        image.composite!(choice, 0, image.rows.to_i - 57, Magick::OverCompositeOp)
+        image.composite!(choice, 0, image.rows.to_i - 85, Magick::OverCompositeOp)
         #image.composite!(choice, Magick::SouthWestGravity, Magick::OverCompositeOp)
         #recipe.main = image.to_blob
         send_data image.to_blob
