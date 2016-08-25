@@ -114,19 +114,19 @@ class LineClient
       x: 0,
       y: 0,
       width: 340,
-      height: 1020
+      height: 1500
     ).add_listener(
       action: 'RECIPE',
       x: 341,
       y: 0,
       width: 340,
-      height: 1020
+      height: 1500
     ).add_listener(
       action: 'COOK',
       x: 641,
       y: 0,
       width: 340,
-      height: 1020
+      height: 1500
     ).send(
       to_mid: @to_mid,
       image_url: "#{HOST}/images/#{recipe.rid}",
