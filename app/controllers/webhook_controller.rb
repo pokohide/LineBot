@@ -3,7 +3,6 @@ require "#{Rails.root}/lib/crawler"
 require 'line/bot'
 
 class WebhookController < ApplicationController
-  include Recipe
 
   CHANNEL_ID = ENV['LINE_CHANNEL_ID']
   CHANNEL_SECRET = ENV['LINE_CHANNEL_SECRET']
@@ -17,6 +16,9 @@ class WebhookController < ApplicationController
     end
     receive_request = Line::Bot::Receive::Request.new(request.env)
     receive_request.data.each do |message|
+      user = User.find_or_create_by(mid: message)
+
+      userUser.find_or_create_by(uid: 'sample')
       c = LineClient.new(client, message)
       c.reply
     end
