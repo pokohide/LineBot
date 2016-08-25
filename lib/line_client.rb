@@ -156,7 +156,6 @@ class LineClient
     ).send(
       to_mid: @to_mid
     )
-
     support(step.content)
   end
 
