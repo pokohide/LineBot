@@ -45,7 +45,7 @@ class WebhookController < ApplicationController
     else
       begin
         original = Magick::Image.read(recipe.image).first
-        image = original.resize_to_fit(700, 9999)
+        image = original.resize_to_fit(400, 3000)
 
         # draw = Magick::Draw.new
         # draw.font(Rails.root.join('fonts', 'font.otf'))
