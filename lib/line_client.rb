@@ -75,13 +75,40 @@ class LineClient
           elsif /(.+?)を作る準備ok/ =~ @message.content[:text]
             start_cooking($1)
             next_step 0
+          elsif /おすすめ|オススメ|お腹|空いた|何か/ =~ @message.content[:text]
+            recipes = Recipe.sh.limit(3)
+            recipes.each_with_index do |recipe, index|
+              if index == 0
+                message = "#{recipe.name}つくらないかい？？􀂌"
+              else
+                message = "他に#{recipe.name}とかどうかな??􀂌"
+              end
+              message += "所要時間は#{recipe.time}" if recipe.time.present?
+              if recipe.fee.present?
+                message += "\n費用は#{recipe.fee}だぜ！􀂍"
+              else
+                message += "だぜ！􀂍\nすまんが、費用はわからない􀁼\n【レシピ】をタップしてみると、何かわかるかもしれないぞ！􀂎"
+              end
+              send_text message
+              send_choice recipe
+            end
+
+            # 更新
+            recipes.each do |r|
+              r.touch
+              r.save
+            end
           else
             recipes = Recipe.like(@message.content[:text]).sh.limit(3)
             if recipes.count == 0
               send_text '見つかりませんでした。'
             else
-              recipes.each do |recipe|
-                message = "#{recipe.name}つくらないかい？？􀂌"
+              recipes.each_with_index do |recipe, index|
+                if index == 0
+                  message = "#{recipe.name}つくらないかい？？􀂌"
+                else
+                  message = "他に#{recipe.name}とかどうかな??􀂌"
+                end
                 message += "所要時間は#{recipe.time}" if recipe.time.present?
                 if recipe.fee.present?
                   message += "\n費用は#{recipe.fee}だぜ！􀂍"
