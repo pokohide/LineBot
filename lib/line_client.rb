@@ -136,6 +136,7 @@ class LineClient
     @recipe = Recipe.find_by(name: name)
     @user.r_id = @recipe.rid
     @user.now_step = 0
+    @user.max_step = @recipe.steps.count
     @user.save
   end
 
@@ -155,6 +156,7 @@ class LineClient
     @user.cook = false
     @user.now_step = nil
     @user.r_id = nil
+    @user.max_step = nil
     @user.save
   end
 
@@ -167,7 +169,7 @@ class LineClient
       )
     end
     c.add_text(
-      text: step.content
+      text: "手順 #{step.turn + 1}/#{@user.max_step}\n#{step.content}"
     ).send(
       to_mid: @to_mid
     )
