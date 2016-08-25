@@ -30,8 +30,7 @@ class LineClient
     @client = client
     @message = message
     @to_mid = message.from_mid
-    @mid = @to_mid.join
-    @user = User.find_or_create_by(mid: @mid)
+    @user = User.find_or_create_by(mid: @to_mid)
   end
 
   def reply
@@ -103,7 +102,7 @@ class LineClient
       },
       START: {
         text: 'つくる',
-        link_url: "#{HOST}/api/cook?mid=#{@mid}&rid=#{recipe.rid}"
+        link_url: "#{HOST}/api/cook?mid=#{@to_mid}&rid=#{recipe.rid}"
       }
     ).add_listener(
       action: 'FOOD',
