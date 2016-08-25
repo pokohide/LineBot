@@ -45,7 +45,7 @@ class LineClient
         case @message.content
         when Line::Bot::Message::Text
           if /次へ\(手順(\d+)へ\)/ =~ @message.content[:text]
-            next_step ($1.to_i -1)
+            next_step $1.to_i
           elsif /(.+?)を諦めます/ =~ @message.content[:text]
             recipe = Recipe.find_by(name: $1)
             send_text """
@@ -183,11 +183,11 @@ class LineClient
   # 次のステップへ
   def next_step num
     @recipe = Recipe.find_by(rid: @user.r_id)
-    step = @recipe.steps[num]
+    step = @recipe.steps[num - 1]
 
     send_step(step)
-    if_next = @recipe.steps[num + 1].present?
-    @user.update(now_step: num + 1)
+    if_next = @recipe.steps[num].present?
+    @user.update(now_step: num)
     next_step_button if_next
   end
 
