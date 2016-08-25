@@ -89,8 +89,8 @@ class LineClient
     @user.update(now_step: @user.now_step + 1)
     send_step(step)
 
-    next? = @recipe.steps[@user.now_step].present?
-    next_step_button next?
+    if_next = @recipe.steps[@user.now_step].present?
+    next_step_button if_next
   end
 
   # 料理終了
@@ -113,8 +113,8 @@ class LineClient
   end
 
   # 次のステップがあるかどうか
-  def next_step_button next?
-    if next?
+  def next_step_button if_next
+    if if_next
       send_text('次はないぞ')
     else
       send_text('ok')
