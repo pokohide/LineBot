@@ -58,9 +58,11 @@
 <body>
   <header>
     <h1 class="title"><%= name %></h1>
-    <div class="figure">
-      <div class="figure-image" style="background-image:url(<%= image %>)"></div>
-    </div>
+    <% if image.size != 0 %>
+      <div class="figure">
+        <div class="figure-image" style="background-image:url(<%= image %>)"></div>
+      </div>
+    <% end %>
   </header>
   <div id="contents">
     <article class="recipe">
