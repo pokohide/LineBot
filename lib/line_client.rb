@@ -105,9 +105,9 @@ class LineClient
             else
               recipes.each_with_index do |recipe, index|
                 if index == 0
-                  message = "#{recipe.name}つくらないかい？？􀂌"
+                  message = "#{recipe.name}つくらないかい？？􀂌\n"
                 else
-                  message = "他に#{recipe.name}とかどうかな??􀂌"
+                  message = "他に#{recipe.name}とかどうかな??􀂌\n"
                 end
                 message += "所要時間は#{recipe.time}" if recipe.time.present?
                 if recipe.fee.present?
