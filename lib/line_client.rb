@@ -69,7 +69,7 @@ class LineClient
               send_text '見つかりませんでした。'
             else
               recipe = recipes[0]
-              send_text "#{recipe.name}を作りませんか?\n所要時間は#{recipe.time}で、費用は#{recipe.fee}です！"
+              send_text "#{recipe.name}作らない？？􀂍　\n所要時間は#{recipe.time}\n費用は#{recipe.fee}\nだよ！"
               send_choice recipe
               # 更新
               recipes.each do |r|
@@ -290,11 +290,19 @@ class LineClient
     @client.send_text(
       to_mid: @to_mid,
       text: """
-        料理bot登録してくれてありがとう！􀁺
-        料理上手への道の第一歩を踏み出したそこのあなた􀁸
-        これから一緒に料理を作っていって、料理レベルを上げていこう！✨
-        上手くできたら友達に自慢できるかも？！􀂌
+ムーンとお料理を友達登録してくれてありがとう􀁹
+これから一緒に料理マスター🍳を目指そうぜ􀂌
+
+食べたい料理があるとき、僕に話しかけてね􀄃􀇗Moon hehe􏿿
+その料理の作り方をあなたのペースに合わせて教えるよ！􀄃􀇕Moon angel􏿿✨
+
+食べたいものがないけど料理したいなー􀂌ってときは【オススメ】ってLINE してね􀂍
+僕が君にとっておきのレシピを紹介するよ􀄃􀇡Moon attracted􏿿
       """
+    )
+    @client.send_text(
+      to_mid: @to_mid,
+      text: 'さっそくだけど􀂌今日作りたい料理🍳は何か教えてほしいな􀄃􀇗Moon hehe􏿿'
     )
   end
 
