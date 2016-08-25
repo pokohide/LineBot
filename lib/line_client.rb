@@ -105,9 +105,9 @@ class LineClient
         type: 'web'
       },
       COOK: {
-        text: "#{recipe.name}をつくります！！！",
-        params_text: "#{recipe.name}をつくります！！！",
-        type: 'sendMessage'
+        text: 'レシピ',
+        link_url: "#{HOST}/recipe/#{recipe.rid}",
+        type: 'web'
       }
     ).add_listener(
       action: 'FOOD',
