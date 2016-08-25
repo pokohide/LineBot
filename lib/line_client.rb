@@ -77,6 +77,44 @@ class LineClient
     end 
   end
 
+  # テクニックを補完
+  def support message
+    cut = ['薄切り', '千切り', '斜め切り', '小口切り', '乱切り', 'ザク切り', 'くし形切り', 'そぎ切り', '輪切り', '半月切り', 
+      'いちょう切り', '拍子木切り', 'さいの目切り', '角切り', '短冊切り', '細切り', 'ささがき', 'みじん切り']
+    yaku = ['素焼き', '塩焼き', '照り焼き', 'つけ焼き', 'かば焼き', '味噌焼き']
+
+    cut.each_with_index do |c, index|
+      if message.include?(c)
+        tech(c, "cut/#{index + 1}")
+      end
+    end
+    yaku.each_with_index do |y, index|
+      if message.include?(c)
+        tech(y, "yaku/#{index + 1}")
+      end
+    end
+  end
+
+  def tech(name, path)
+    @client.rich_message.set_action(
+      TECH: {
+        text: name.to_s,
+        link_url: "#{HOST}/tech/#{path}",
+        type: 'web'           
+      }
+    ).add_listener(
+      action: 'TECH',
+      x: 0,
+      y: 0,
+      width: 1020,
+      height: 144
+    ).send(
+      to_mid: @to_mid,
+      image_url: "#{HOST}/tech-img/#{path}",
+      alt_text: name.to_s
+    )
+  end
+
   # 料理開始
   def start_cooking name
     @user.cook = true
@@ -90,6 +128,7 @@ class LineClient
   def next_step num
     @recipe = Recipe.find_by(rid: @user.r_id)
     step = @recipe.steps[num]
+
     send_step(step)
     if_next = @recipe.steps[num + 1].present?
     @user.update(now_step: num + 1)
@@ -117,6 +156,8 @@ class LineClient
     ).send(
       to_mid: @to_mid
     )
+
+    support(step.content)
   end
 
   # 次のステップがあるかどうか
