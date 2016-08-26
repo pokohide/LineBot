@@ -35,7 +35,7 @@ class RecipesController < ApplicationController
     elsif ua.include?('Android')
       render html: "アンドロイドはシェアまで実装できませんでした..."
     else
-      render json: {rid: params[:rid]}
+      render html: share_erb({name: recipe.name, rid: recipe.rid})
     end
   end
 
@@ -56,7 +56,7 @@ TEXT_END
 
   def share_erb(opts)
     html = <<TEXT_END
-      <% title = '#{opts[:name]}' %>
+      <% name = '#{opts[:name]}' %>
       <% rid = '#{opts[:rid]}' %>
       <% app = 'twitter' %>
 TEXT_END
