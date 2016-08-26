@@ -28,11 +28,12 @@ class RecipesController < ApplicationController
   end
 
   def share
+    recipe = Recipe.find_by(rid: params[:rid])
     ua = request.env["HTTP_USER_AGENT"]
     if ua.include?('Mobile')
-      redirect_to 'intent://hoge.com#Intent;scheme=twitter;package=twitter.activity;end'
+      render html: share_erb({name: recipe.name, rid: recipe.rid})
     elsif ua.include?('Android')
-      render html: File.open("#{Rails.root}/app/views/recipes/share.html").html_safe
+      render html: "アンドロイドはシェアまで実装できませんでした..."
     else
       render json: {rid: params[:rid]}
     end
@@ -50,6 +51,16 @@ class RecipesController < ApplicationController
       <% materials = #{opts[:materials] || []} %>
 TEXT_END
     html += File.open("#{Rails.root}/app/views/recipes/#{fname}.html.erb", 'r').read
+    ERB.new(html).result.html_safe
+  end
+
+  def share_erb(opts)
+    html = <<TEXT_END
+      <% title = '#{opts[:name]}' %>
+      <% rid = '#{opts[:rid]}' %>
+      <% app = 'twitter' %>
+TEXT_END
+    html += File.open("#{Rails.root}/app/views/recipes/share.html.erb", 'r').read
     ERB.new(html).result.html_safe
   end
 

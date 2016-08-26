@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Twitterでシェア</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.search(/iphone|ipad|ipod/) > -1) {
+      // Launch myapp via URL scheme
+      launch_frame.location.href = "<%= app %>://post?message=ムーンと<%= name %>を作ったよ(^-^)！料理結構楽しいかも( ^ω^ )みんなもLINEでムーンとお料理しようよ(^.^) http://recipe.rakuten.co.jp/recipe/<%= rid %>/ [ムーンとお料理] https://page.line.me/buv1394j"
+
+
+      setTimeout(function(){
+        // Open App DL page in iTunes Store
+        location.href= "http://itunes.com/apps/twitter";
+      } , 500);
+    }
+  });
+  </script>
+</head>
+<body>
+  <div style="width:0; height:0; overflow:hidden;">
+    <iframe id="launch_frame" name="launch_frame">
+    </iframe>
+  </div>
+  <h1><%= app %> へ移動します、移動しない時は更新してみてください</h1>
+  <p>Androidは移動しないです</p>
+</body>
+</html>
