@@ -259,7 +259,7 @@ class LineClient
         height: 144
       ).send(
         to_mid: @to_mid,
-        image_url: "#{HOST}/assets/finish",
+        image_url: "#{HOST}/assets/share",
         alt_text: 'シェアしよう'
       )
       end_cooking
