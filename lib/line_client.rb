@@ -36,7 +36,7 @@ class LineClient
   def reply
     case @message
     when Line::Bot::Receive::Operation
-      case data.content
+      case @message.content
       when Line::Bot::Operation::AddedAsFriend
         introduce_myself # in private
       end
