@@ -64,12 +64,16 @@ class WebhookController < ApplicationController
         original = Magick::Image.read(recipe.image).first
         image = original.resize_to_fill(600, 600)
 
-        # draw = Magick::Draw.new
-        # draw.font(Rails.root.join('fonts', 'font.otf'))
+        draw = Magick::Draw.new
+        #draw.font(Rails.root.join('fonts', 'font.otf'))
+        #draw.font("#{Rails.root}/fonts/migmix-2p-regular.ttf")
+        #Magick.fonts
+        #binding.pry
         # 文字の影 ( 1pt 右下へずらす )
-        # draw.annotate(image, 0, 0, 4, 4, recipe.name) do
+        #draw.annotate(image, 0, 0, 4, 4, recipe.name) do
           #self.font_family = "#{Rails.root}/publick/fonts/font.ttf"
-        #  self.font_family = "#{Rails.root}/fonts/font.otf"
+          #self.font_family = "#{Rails.root}/fonts/font.otf"
+        #  self.font_family = 'MicrosoftSansSerif'
         #  self.fill      = 'black'                   # フォント塗りつぶし色(黒)
         #  self.stroke    = 'transparent'             # フォント縁取り色(透過)
         #  self.pointsize = 50                        # フォントサイズ(16pt)
@@ -79,7 +83,8 @@ class WebhookController < ApplicationController
         # 文字
         #draw.annotate(image, 0, 0, 5, 5, recipe.name) do
           #self.font_family = "#{Rails.root}/publick/fonts/font.ttf"
-        #  self.font_family = "#{Rails.root}/fonts/font.otf"
+          #self.font_family = "#{Rails.root}/fonts/font.otf"
+        #  self.font_family = 'MicrosoftSansSerif'
         #  self.fill      = 'white'                   # フォント塗りつぶし色(白)
         #  self.stroke    = 'transparent'             # フォント縁取り色(透過)
         #  self.pointsize = 50                        # フォントサイズ(16pt)

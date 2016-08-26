@@ -79,7 +79,7 @@ class LineClient
             start_cooking($1)
             next_step 1
           elsif /おすすめ|オススメ|お腹|空いた|何か/ =~ @message.content[:text]
-            recipes = Recipe.sh.limit(3)
+            recipes = Recipe.sh.limit(2)
             recipes.each_with_index do |recipe, index|
               if index == 0
                 message = "#{recipe.name}つくらないかい？？􀂌"
@@ -102,7 +102,7 @@ class LineClient
               r.save
             end
           else
-            recipes = Recipe.like(@message.content[:text]).sh.limit(3)
+            recipes = Recipe.like(@message.content[:text]).sh.limit(2)
             if recipes.count == 0
               when_nothing # in private
             else
