@@ -248,7 +248,7 @@ class LineClient
       @client.rich_message.set_action(
         SHARE: {
           text: 'シェアしよう',
-          link_url: "#{HOST}/share/#{recipe.rid}",
+          link_url: "https://rocky-wildwood-42894.herokuapp.com/twitter/#{recipe.name}/#{recipe.rid}",
           type: 'web'        
         }
       ).add_listener(
